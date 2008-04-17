@@ -27,21 +27,21 @@ import Arbre.*;
 public class Start {
 
 	public static void main(String args[]) {
-		Feuille[] tab = new Feuille[20];
+		Feuille[] tab = new Feuille[2500000];
 		Random r = new Random();
 		int i;
-		for (i=0 ; i<20 ; i++)
-			tab[i] = new Feuille(r.nextInt(20), r.nextInt(50));
+		for (i=0 ; i<2500000 ; i++)
+			tab[i] = new Feuille(r.nextInt(2500000), r.nextInt(500));
 
 		System.out.println("Tableau non trié :");
-		for (Feuille f : tab)
-			System.out.print(f.getFreq()+", ");
+		//for (Feuille f : tab)
+			//System.out.print(f.getFreq()+", ");
 
 		Tri.sort(tab);
 
 		System.out.println("\nTableau trié :");
-		for (Feuille f : tab)
-			System.out.print(f.getFreq()+", ");
+		//for (Feuille f : tab)
+			//System.out.print(f.getFreq()+", ");
 	}
 
 }
