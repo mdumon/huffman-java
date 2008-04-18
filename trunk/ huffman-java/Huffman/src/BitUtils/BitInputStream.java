@@ -66,7 +66,7 @@ public class BitInputStream extends FilterInputStream{
 		 */
 		if((bbIndex % 8) == 0){
 			int bRead = super.read();
-			if(bRead == -1) throw new IOException("End of underlying stream reached");
+			if(bRead == -1) throw new IOException("End of the underlying stream reached");
 			
 			byteBuf = (byte)bRead;
 			bbIndex = 0;
@@ -145,6 +145,36 @@ public class BitInputStream extends FilterInputStream{
 		
 		byteBuf = (byte)super.read();
 		return n;
+	}
+	
+	/**
+	 * Skips <code>n</code> Bits from the underlying input stream
+	 * @param n Number of bits to skip
+	 * @return number of bit skipped
+	 * @throws IOException Thrown if something wrong happen when reading the stream.
+	 */
+	public long skipBits(long n) throws IOException{
+		if(n <= 0) return 0;
+		
+		long i = n;
+		while(i-- > 0){
+			readBit();
+		}
+		
+		return n;
+	}
+	
+	/**
+	 * Returns an estimate of the number of bits 
+	 * that can be read (or skipped over) from this 
+	 * input stream without blocking by the next 
+	 * invocation of a method for this input stream.
+	 * 
+	 * @return an estimate of the number of bits that can be read (or skipped over) from this input stream without blocking. 
+	 * @throws IOException
+	 */
+	public int availableBits() throws IOException{
+		return this.available() + 8 - bbIndex;
 	}
 }
 

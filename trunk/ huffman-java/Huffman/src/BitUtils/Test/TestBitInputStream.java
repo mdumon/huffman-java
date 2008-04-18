@@ -10,12 +10,21 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import BitUtils.BitArray;
 import BitUtils.BitInputStream;
 
 public class TestBitInputStream {
-
+	
+	static final boolean[] testBoolTab = new boolean[]{
+		false,false, true, true,false,false,false, true,	// '1'
+		false,false, true, true,false,false, true,false,	// '2'
+		false,false, true, true,false,false, true, true,	// '3'
+		false,false, true, true,false, true,false,false,	// '4'
+		false,false, true, true,false, true,false, true		// '5'
+	};
+	
 	@Test
-	public void testRead() {
+	public void testReadSkipSkipBits() {
 		BitInputStream bis;
 		byte b;
 		
@@ -28,18 +37,23 @@ public class TestBitInputStream {
 		
 		try{
 			b = (byte)bis.read();
+			assertTrue(b == (byte)'1');
+		
+			bis.skip(1);
+			
+			b = (byte)bis.read();
+			assertTrue(b == (byte)'3');
+			
+			bis.skipBits(8);
+			
+			b = (byte)bis.read();
+			assertTrue(b == (byte)'5');
+			
+			bis.close();
 		}catch(IOException ioe1){
 			System.out.println(ioe1.getMessage());
-			return;
+			fail("IOException :-/");
 		}
-		
-		assertTrue(b == (byte)'1');
-	}
-
-	@Ignore("Not yet implemented")
-	@Test
-	public void testSkip() {
-		fail("Not yet implemented");
 	}
 
 	@Ignore("Not yet implemented")
@@ -55,25 +69,56 @@ public class TestBitInputStream {
 		fail("Not yet implemented");
 	}
 
-
-	@Ignore("Not yet implemented")
-	@Test
-	public void testBitInputStream() {
-		fail("Not yet implemented");
-	}
-
-
-	@Ignore("Not yet implemented")
 	@Test
 	public void testReadBit() {
-		fail("Not yet implemented");
+		BitInputStream bis;
+		
+		try{
+			bis = new BitInputStream(new FileInputStream("src/BitUtils/Test/testFile"));
+		}catch(FileNotFoundException fnfe1){
+			System.out.println(fnfe1.getMessage());
+			return;
+		}
+		
+		try{
+			for(boolean b : testBoolTab)
+				assertTrue(b == bis.readBit());
+			
+			bis.close();
+		}catch(IOException ioe1){
+			System.out.println(ioe1.getMessage());
+			fail("IOException :-/");
+		}
 	}
 
-
-	@Ignore("Not yet implemented")
 	@Test
 	public void testReadBits() {
-		fail("Not yet implemented");
+		BitInputStream bis;
+		BitArray ba = new BitArray();
+		
+		try{
+			bis = new BitInputStream(new FileInputStream("src/BitUtils/Test/testFile"));
+		}catch(FileNotFoundException fnfe1){
+			System.out.println(fnfe1.getMessage());
+			return;
+		}
+		
+		try{
+			int nbBits;
+			for(int i = 0; i < testBoolTab.length;){
+				
+				nbBits = bis.availableBits();
+				ba = bis.readBits( (nbBits >= 9)?9:nbBits );
+				
+				for(boolean baBit: ba)
+						assertTrue(testBoolTab[i++] == baBit);
+			}
+			
+			bis.close();
+		}catch(IOException ioe1){
+			System.out.println(ioe1.getMessage());
+			fail("IOException :-/");
+		}
 	}
 
 }
