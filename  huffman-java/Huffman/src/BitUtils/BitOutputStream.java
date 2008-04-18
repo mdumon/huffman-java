@@ -6,58 +6,34 @@ import java.io.OutputStream;
 
 public class BitOutputStream extends FilterOutputStream{
 
+	private BitArray buffer;
+	
 	public BitOutputStream(OutputStream out){
-			super(out);
-	}
-	
-	private byte[] output;
-	private byte octet;
-	private int j;
-	
-	public void write(byte[] b) throws IOException{
-		out.write(b);
+		super(out);
 	}
 
-	public void writeBits(BitArray b) throws IOException{
+	public void writeBits(BitArray b) throws IOException, ArrayTooShortException{
 		this.writeBits(b, 0, b.size());
 	}
-	
-	public void writeBits(BitArray b, int off, int len) throws IOException{
+
+	public void writeBits(BitArray b, int off, int len) throws IOException, ArrayTooShortException{
+
+		if(b.size() == 0)
+			return;
+
+		if((len + off) >= b.size())
+			throw new ArrayTooShortException();
+
+		buffer = new BitArray();
 		
-		j = 0;
-		octet = 0;
-		output = new byte[b.size() / 8];
+			for(int i = off; i < len; i++)
+				buffer.add(b.get(i));
 		
-		for(int i = off; i < b.size(); i++){
-			if(b.get(i)){
-				octet += 1;
-			}
-			else{
-				octet += 0;
-			}
-				octet <<= 1;
-			
-			/* juste un souci ici
-			 * si je veux mettre dans le tableau tous les 8 bits
-			 * il va le faire quand i vaut 0 lol
-			 */	
-			if((i % 8) == 0){
-				output[j] = octet;
-				j++;
-			}
-			
-		}
-		
-		this.write(output);
+		write(buffer.removeWritableByteArray());
 	}
-	
+
 	public void flush() throws IOException{
-		output[j] = octet;
-		this.write(output);
-		out.flush();
-	}
-	
-	public void close() throws IOException{
-		out.close();
+		this.write(buffer.removeByteArray());
+		super.flush();
 	}
 }
