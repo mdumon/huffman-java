@@ -1,4 +1,4 @@
-package bitUtils;
+package BitUtils;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
