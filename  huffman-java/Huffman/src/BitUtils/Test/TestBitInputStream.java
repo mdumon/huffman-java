@@ -3,11 +3,11 @@ package BitUtils.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import BitUtils.BitArray;
@@ -56,17 +56,33 @@ public class TestBitInputStream {
 		}
 	}
 
-	@Ignore("Not yet implemented")
 	@Test
-	public void testMark() {
-		fail("Not yet implemented");
-	}
-
-
-	@Ignore("Not yet implemented")
-	@Test
-	public void testReset() {
-		fail("Not yet implemented");
+	public void testMarkReset() {
+		BitInputStream bis;
+		BitArray ba;
+		
+		try{
+			bis = new BitInputStream(new BufferedInputStream(new FileInputStream("src/BitUtils/Test/testFile")));
+		}catch(FileNotFoundException fnfe1){
+			System.out.println(fnfe1.getMessage());
+			return;
+		}
+		
+		try{
+			if(bis.markSupported()){
+				bis.readBits(5);
+				bis.mark(30);
+				ba = bis.readBits(16);
+				bis.reset();
+				for(boolean b : ba)
+					assertTrue( b == bis.readBit());
+			}
+			
+			bis.close();
+		}catch(IOException ioe1){
+			System.out.println(ioe1.getMessage());
+			fail("IOException :-/");
+		}
 	}
 
 	@Test
@@ -120,5 +136,5 @@ public class TestBitInputStream {
 			fail("IOException :-/");
 		}
 	}
-
 }
+
