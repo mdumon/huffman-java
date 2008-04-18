@@ -14,7 +14,7 @@ public class BitArray implements Iterable<Boolean>{
 	List<Boolean> bList;
 	
 	public enum Endianness { BIG_ENDIAN, LITTLE_ENDIAN };
-	int endianShift = 7;
+	private final int endianShift = 7;
 	
 	
 	/**
