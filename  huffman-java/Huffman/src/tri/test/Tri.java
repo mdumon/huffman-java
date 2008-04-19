@@ -13,7 +13,7 @@
  * 
  */
 
-package Tri.Test;
+package tri.test;
 
 import java.util.Arrays;
 

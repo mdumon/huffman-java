@@ -1,4 +1,4 @@
-package BitUtils.Test;
+package bitutils.test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -10,8 +10,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import BitUtils.BitArray;
-import BitUtils.BitInputStream;
+import bitutils.BitArray;
+import bitutils.BitInputStream;
+
 
 public class TestBitInputStream {
 	

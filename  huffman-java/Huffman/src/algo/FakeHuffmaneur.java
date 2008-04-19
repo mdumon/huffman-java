@@ -1,4 +1,4 @@
-package Algo;
+package algo;
 
 public class FakeHuffmaneur extends Huffmaneur {
 

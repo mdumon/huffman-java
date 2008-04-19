@@ -13,14 +13,17 @@
  * 
  */
 
-package Tri;
+package tri;
 
 import java.util.Random;
 
-import Tri.Test.Tri;
+import tri.test.Tri;
 
-import Arbre.Leaf;
-import BitUtils.BitArray;
+import bitutils.BitArray;
+
+import arbre.Leaf;
+
+
 
 /**
  * Class Start : main

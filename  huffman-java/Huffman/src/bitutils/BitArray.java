@@ -1,4 +1,4 @@
- package BitUtils;
+ package bitutils;
 
 /**
  * A <code>BitArray</code> is an Array of bits

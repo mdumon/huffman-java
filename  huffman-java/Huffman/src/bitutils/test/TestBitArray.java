@@ -1,4 +1,4 @@
-package BitUtils.Test;
+package bitutils.test;
 
 /**
  * @author Franck Séhédic
@@ -13,8 +13,9 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import BitUtils.ArrayTooShortException;
-import BitUtils.BitArray;
+import bitutils.ArrayTooShortException;
+import bitutils.BitArray;
+
 
 public class TestBitArray {
 	
