@@ -1,6 +1,6 @@
-package Arbre;
+package arbre;
 
-import BitUtils.BitArray;
+import bitutils.BitArray;
 
 /**
  * A <code>Leaf</code> is used to store a key,
@@ -18,7 +18,7 @@ public class Leaf implements Comparable<Leaf> {
 	/* la clef représentée par cette feuille */
 	private BitArray key;
 	
-	/* sa fréquence d'apparition dans le fichier */ 
+	/* sa fréquence d'apparition */ 
 	private int freq;
 	
 	public Leaf(BitArray key,int freq){
@@ -49,7 +49,7 @@ public class Leaf implements Comparable<Leaf> {
 	 * Surcharge de la m�thode de Comparable
 	 */
 	@Override
-	public int compareTo(Leaf f) {
-		return this.getFreq() - f.getFreq();
+	public int compareTo(Leaf l) {
+		return this.getFreq() - l.getFreq();
 	}
 }

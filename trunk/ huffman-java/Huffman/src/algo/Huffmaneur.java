@@ -1,4 +1,4 @@
-package Algo;
+package algo;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

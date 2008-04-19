@@ -1,4 +1,4 @@
-package BitUtils;
+package bitutils;
 
 /**
  * An <code>ArrayTooShortException</code> is thrown
