@@ -1,4 +1,4 @@
-package ProgressBar;
+package ihm;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -17,9 +17,9 @@ public class ProgressBarWithEvent extends JProgressBar implements PropertyChange
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("progress")){
+		//if (evt.getPropertyName().equals("encode")){
 			this.setValue((Integer)evt.getNewValue());
-		}
+		//}
 	}
 	
 }

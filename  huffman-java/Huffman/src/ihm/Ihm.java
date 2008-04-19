@@ -6,13 +6,13 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeSupport;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JSlider;
-import javax.swing.JProgressBar;
-import javax.swing.ProgressMonitor;
 
 public class Ihm {
 
@@ -31,20 +31,21 @@ public class Ihm {
 	private JLabel jLabelDico = null;  //  @jve:decl-index=0:visual-constraint="600,112"
 	private JLabel jLabelSize = null;  //  @jve:decl-index=0:visual-constraint="992,121"
 	private	JFileChooser jFileChooser;
-	private JProgressBar jProgressBar = null;  //  @jve:decl-index=0:visual-constraint="654,45"
+	private ProgressBarWithEvent progressBar = null;  //  @jve:decl-index=0:visual-constraint="654,45"
 	private JButton jButtonTest = null;  //  @jve:decl-index=0:visual-constraint="603,133"
-	private IhmProgressMonitor threadProgress;
 
 	/**
-	 * This method initializes Ihm	
+	 * This method initializes ihmListener	
 	 * 	
-	 * @return javax.swing.JFrame	
+	 * @return IhmListener
 	 */
-	private Ihm() {
-		ihmListener = new IhmListener(this);
-		threadProgress = new IhmProgressMonitor(this);
+	IhmListener getIhmListener() {
+		if (ihmListener == null) {
+			ihmListener = new IhmListener(this);
+		}
+		return ihmListener;
 	}
-
+	
 	/**
 	 * This method initializes jFrame	
 	 * 	
@@ -55,7 +56,7 @@ public class Ihm {
 			jFrame = new JFrame("Huffmanzip");
 			jFrame.setSize(new Dimension(515, 201));
 			jFrame.setContentPane(getJPanel());
-			jFrame.addWindowListener(ihmListener);
+			jFrame.addWindowListener(getIhmListener());
 		}
 		return jFrame;
 	}
@@ -128,7 +129,7 @@ public class Ihm {
 			jPanel.add(getJButtonChooseFileDest(), gridBagConstraintsButtonFileDest);
 			jPanel.add(getJButtonEncode(), gridBagConstraintsButtonEncode);
 			jPanel.add(getJButtonDecode(), gridBagConstraintsButtonDecode);
-			jPanel.add(getJProgressBar(), gridBagConstraintsProgress);
+			jPanel.add(getProgressBar(), gridBagConstraintsProgress);
 			jPanel.add(getJButtonTest(), gridBagConstraintsTest);
 		}
 		return jPanel;
@@ -142,7 +143,7 @@ public class Ihm {
 	JButton getJButtonEncode() {
 		if (jButtonEncode == null) {
 			jButtonEncode = new JButton("Encode");
-			jButtonEncode.addActionListener(ihmListener);
+			jButtonEncode.addActionListener(getIhmListener());
 		}
 		return jButtonEncode;
 	}
@@ -155,7 +156,7 @@ public class Ihm {
 	JButton getJButtonDecode() {
 		if (jButtonDecode == null) {
 			jButtonDecode = new JButton("Decode");
-			jButtonDecode.addActionListener(ihmListener);
+			jButtonDecode.addActionListener(getIhmListener());
 		}
 		return jButtonDecode;
 	}
@@ -168,7 +169,7 @@ public class Ihm {
 	JButton getJButtonChooseFileSrc() {
 		if (jButtonChooseFileSrc == null) {
 			jButtonChooseFileSrc = new JButton("...");
-			jButtonChooseFileSrc.addActionListener(ihmListener);
+			jButtonChooseFileSrc.addActionListener(getIhmListener());
 		}
 		return jButtonChooseFileSrc;
 	}
@@ -181,7 +182,7 @@ public class Ihm {
 	JButton getJButtonChooseFileDest() {
 		if (jButtonChooseFileDest == null) {
 			jButtonChooseFileDest = new JButton("...");
-			jButtonChooseFileDest.addActionListener(ihmListener);
+			jButtonChooseFileDest.addActionListener(getIhmListener());
 		}
 		return jButtonChooseFileDest;
 	}
@@ -248,7 +249,7 @@ public class Ihm {
 			jSlider.setMinorTickSpacing(2);
 			jSlider.setPaintTicks(true);
 			jSlider.setPaintLabels(true);
-			jSlider.addChangeListener(ihmListener);
+			jSlider.addChangeListener(getIhmListener());
 		}
 		return jSlider;
 	}
@@ -292,16 +293,16 @@ public class Ihm {
 	}
 	
 	/**
-	 * This method initializes jProgressBar	
+	 * This method initializes progressBar	
 	 * 	
-	 * @return javax.swing.JProgressBar	
+	 * @return ProgressBarWithEvent
 	 */
-	JProgressBar getJProgressBar() {
-		if (jProgressBar == null) {
-			jProgressBar = new JProgressBar(0,100);
-			jProgressBar.addChangeListener(ihmListener);
+	ProgressBarWithEvent getProgressBar() {
+		if (progressBar == null) {
+			progressBar = new ProgressBarWithEvent();
+			//progressBar.addChangeListener(getIhmListener());
 		}
-		return jProgressBar;
+		return progressBar;
 	}
 
 	/**
@@ -312,23 +313,11 @@ public class Ihm {
 	JButton getJButtonTest() {
 		if (jButtonTest == null) {
 			jButtonTest = new JButton("Test");
-			jButtonTest.addActionListener(ihmListener);
+			jButtonTest.addActionListener(getIhmListener());
 		}
 		return jButtonTest;
 	}
 
-	/**
-	 * This method initializes progressMonitorDecode	
-	 * 	
-	 * @return javax.swing.JButton	
-	 *
-	IhmProgressMonitor getThreadProgress() {
-		if (threadProgress == null) {
-			threadProgress = new IhmProgressMonitor(this);
-		}
-		return threadProgress;
-	}*/
-	
 	/**
 	 * @param args
 	 */
@@ -339,18 +328,25 @@ public class Ihm {
 	
 	public void test() {
 		System.out.println("Test en cours...");
-		threadProgress.start();
-		threadProgress.setProgressEncode(0,"zag");
+		
+		PropertyChangeSupport support = new PropertyChangeSupport(getJFrame());
+		support.addPropertyChangeListener(getProgressBar());
 		
 		int i,c,r;
-		for (i=0 ; i<101 ; i++)
+		for (i=0 ; i<=100 ; i++)
 		{
-			for (c=0 ; c<10000 ; c++)
+			/*for (c=0 ; c<10000 ; c++)
 				for (r=0 ; r<10000 ; r++)
 				{
 					
-				}
-			threadProgress.setProgressEncode(i,"zag");
+				}*/
+				
+			PropertyChangeEvent evt = new PropertyChangeEvent(getJFrame(),"encode",0,new Integer(i));
+			support.firePropertyChange(evt);
+			try {
+				Thread.sleep(180);
+			}
+			catch (InterruptedException e) {e.getMessage();}
 			System.out.println(i);
 		}
 	}

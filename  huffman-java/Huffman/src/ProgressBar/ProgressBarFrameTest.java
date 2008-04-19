@@ -1,5 +1,7 @@
 package ProgressBar;
 
+import ihm.ProgressBarWithEvent;
+
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
