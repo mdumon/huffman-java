@@ -19,16 +19,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.JFileChooser;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import Algo.FakeHuffmaneur;
+
 /**
  * Class Tri
  */
 
-public class IhmListener implements ChangeListener, ActionListener, WindowListener {
+public class IhmListener implements ChangeListener, ActionListener, WindowListener, PropertyChangeListener {
 
 	private Ihm ihm;
 
@@ -68,25 +73,35 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 		//bouton 'encoder'
 		else if (e.getSource() == ihm.getJButtonEncode())
 		{
-
+			ihm.setHuffmaneur(new FakeHuffmaneur());
+			ihm.getHuffmaneur().addPropertyChangeListener(ihm.getProgressBar());
+			ihm.getHuffmaneur().addPropertyChangeListener(this);
+			ihm.getHuffmaneur().start();
+			ihm.initButtonsStates(false);
 		}
 
 		//bouton 'decoder'
 		else if (e.getSource() == ihm.getJButtonDecode())
 		{
-
+			ihm.setHuffmaneur(new FakeHuffmaneur());
+			ihm.getHuffmaneur().addPropertyChangeListener(ihm.getProgressBar());
+			ihm.getHuffmaneur().addPropertyChangeListener(this);
+			ihm.getHuffmaneur().start();
+			ihm.initButtonsStates(false);
 		}
 		
 		//bouton 'pause'
 		else if (e.getSource() == ihm.getJButtonPause())
 		{
-			
+			ihm.getJButtonPause().setEnabled(false);
+			ihm.getHuffmaneur().setPaused(!ihm.getHuffmaneur().isPaused());
 		}
 		
 		//bouton 'cancel'
 		else if (e.getSource() == ihm.getJButtonCancel())
 		{
 			ihm.getJButtonCancel().setEnabled(false);
+			ihm.getHuffmaneur().cancel();
 		}
 
 	}
@@ -106,5 +121,31 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 	public void windowIconified(WindowEvent e) {}
 		
 	public void windowOpened(WindowEvent e) {}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		
+		if (e.getSource() == ihm.getHuffmaneur()){
+			
+			if(e.getPropertyName().equals("canceled")){
+				ihm.initButtonsStates(true);
+			}
+			
+			else if(e.getPropertyName().equals("paused")){
+				if((Boolean)e.getNewValue())
+					ihm.getJButtonPause().setText("reprendre");
+				else
+					ihm.getJButtonPause().setText("pause");
+				ihm.getJButtonPause().setEnabled(true);
+			}
+			
+			else if(e.getPropertyName().equals("advance")){
+				if((Integer)e.getNewValue() == 100){
+					ihm.initButtonsStates(true);
+				}
+			}
+		}
+		
+	}
 
 }

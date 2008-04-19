@@ -1,8 +1,14 @@
  package BitUtils;
 
 /**
- * @author Franck Séhédic, Dumon Maxime
+ * A <code>BitArray</code> is an Array of bits
+ * beeing able to be built from a byte array or
+ * a boolean array and storing each bit as a boolean value.
  * 
+ * @author Franck Séhédic
+ * @author Maxime Dumon
+ * 
+ * @version 0.0.1 - 19/04/08
  */
 
 import java.util.Arrays;
@@ -11,11 +17,15 @@ import java.util.List;
 import java.util.Vector;
 
 public class BitArray implements Iterable<Boolean>{
-	List<Boolean> bList;
 	
+	/* liste utilisée pour stocker en interne les bits */ 
+	private List<Boolean> bList;
+	
+	/* Constante représentant l'endianness dans laquelle le BitArray travaille (BIG_ENDIAN uniquement pour le moment) */
 	public enum Endianness { BIG_ENDIAN, LITTLE_ENDIAN };
-	private final int endianShift = 7;
 	
+	/* Index permettant de travailler en little ou big endian sur les bytes, 7 == big endian == lecture de gauche à droite */
+	private final int endianShift = 7;
 	
 	/**
 	 * Build an empty BitArray
