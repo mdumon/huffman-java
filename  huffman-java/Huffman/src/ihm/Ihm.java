@@ -1,0 +1,358 @@
+package ihm;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Dimension;
+import javax.swing.JButton;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JSlider;
+import javax.swing.JProgressBar;
+import javax.swing.ProgressMonitor;
+
+public class Ihm {
+
+	private IhmListener ihmListener;
+	private JFrame jFrame = null;  //  @jve:decl-index=0:visual-constraint="6,8"
+	private JPanel jPanel = null;
+	private JButton jButtonEncode = null;  //  @jve:decl-index=0:visual-constraint="523,247"
+	private JButton jButtonDecode = null;  //  @jve:decl-index=0:visual-constraint="692,195"
+	private JButton jButtonChooseFileSrc = null;  //  @jve:decl-index=0:visual-constraint="968,48"
+	private JButton jButtonChooseFileDest = null;  //  @jve:decl-index=0:visual-constraint="962,88"
+	private JLabel jLabelFileSrc = null;  //  @jve:decl-index=0:visual-constraint="723,57"
+	private JLabel jLabelFileDest = null;  //  @jve:decl-index=0:visual-constraint="776,92"
+	private JTextField jTextFieldFileSrc = null;  //  @jve:decl-index=0:visual-constraint="909,52"
+	private JTextField jTextFieldFileDest = null;  //  @jve:decl-index=0:visual-constraint="921,97"
+	private JSlider jSlider = null;  //  @jve:decl-index=0:visual-constraint="705,112"
+	private JLabel jLabelDico = null;  //  @jve:decl-index=0:visual-constraint="600,112"
+	private JLabel jLabelSize = null;  //  @jve:decl-index=0:visual-constraint="992,121"
+	private	JFileChooser jFileChooser;
+	private JProgressBar jProgressBar = null;  //  @jve:decl-index=0:visual-constraint="654,45"
+	private JButton jButtonTest = null;  //  @jve:decl-index=0:visual-constraint="603,133"
+	private IhmProgressMonitor threadProgress;
+
+	/**
+	 * This method initializes Ihm	
+	 * 	
+	 * @return javax.swing.JFrame	
+	 */
+	private Ihm() {
+		ihmListener = new IhmListener(this);
+		threadProgress = new IhmProgressMonitor(this);
+	}
+
+	/**
+	 * This method initializes jFrame	
+	 * 	
+	 * @return javax.swing.JFrame	
+	 */
+	JFrame getJFrame() {
+		if (jFrame == null) {
+			jFrame = new JFrame("Huffmanzip");
+			jFrame.setSize(new Dimension(515, 201));
+			jFrame.setContentPane(getJPanel());
+			jFrame.addWindowListener(ihmListener);
+		}
+		return jFrame;
+	}
+
+	/**
+	 * This method initializes jPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getJPanel() {
+		if (jPanel == null) {
+
+			GridBagConstraints gridBagConstraintsLabelDico = new GridBagConstraints();
+			gridBagConstraintsLabelDico.gridx = 0;
+			gridBagConstraintsLabelDico.gridy = 0;
+			gridBagConstraintsLabelDico.anchor = GridBagConstraints.NORTH;
+			GridBagConstraints gridBagConstraintsSlider = new GridBagConstraints();
+			gridBagConstraintsSlider.gridx = 1;
+			gridBagConstraintsSlider.gridy = 0;
+			gridBagConstraintsSlider.fill = GridBagConstraints.HORIZONTAL;
+			GridBagConstraints gridBagConstraintsLabelSize = new GridBagConstraints();
+			gridBagConstraintsLabelSize.gridx = 2;
+			gridBagConstraintsLabelSize.gridy = 0;
+			gridBagConstraintsLabelSize.anchor = GridBagConstraints.NORTH;
+			GridBagConstraints gridBagConstraintsLabelFileSrc = new GridBagConstraints();
+			gridBagConstraintsLabelFileSrc.gridx = 0;
+			gridBagConstraintsLabelFileSrc.gridy = 2;
+			GridBagConstraints gridBagConstraintsLabelFileDest = new GridBagConstraints();
+			gridBagConstraintsLabelFileDest.gridx = 0;
+			gridBagConstraintsLabelFileDest.gridy = 3;
+			GridBagConstraints gridBagConstraintsTextFieldFileSrc = new GridBagConstraints();
+			gridBagConstraintsTextFieldFileSrc.gridx = 1;
+			gridBagConstraintsTextFieldFileSrc.gridy = 2;
+			gridBagConstraintsTextFieldFileSrc.weightx = 2;
+			gridBagConstraintsTextFieldFileSrc.fill = GridBagConstraints.HORIZONTAL;
+			GridBagConstraints gridBagConstraintsTextFieldFileDest = new GridBagConstraints();
+			gridBagConstraintsTextFieldFileDest.gridx = 1;
+			gridBagConstraintsTextFieldFileDest.gridy = 3;
+			gridBagConstraintsTextFieldFileDest.weightx = 2;
+			gridBagConstraintsTextFieldFileDest.fill = GridBagConstraints.HORIZONTAL;
+			GridBagConstraints gridBagConstraintsButtonFileSrc = new GridBagConstraints();
+			gridBagConstraintsButtonFileSrc.gridx = 2;
+			gridBagConstraintsButtonFileSrc.gridy = 2;
+			GridBagConstraints gridBagConstraintsButtonFileDest = new GridBagConstraints();
+			gridBagConstraintsButtonFileDest.gridx = 2;
+			gridBagConstraintsButtonFileDest.gridy = 3;
+			GridBagConstraints gridBagConstraintsButtonEncode = new GridBagConstraints();
+			gridBagConstraintsButtonEncode.gridx = 0;
+			gridBagConstraintsButtonEncode.gridy = 4;
+			GridBagConstraints gridBagConstraintsButtonDecode = new GridBagConstraints();
+			gridBagConstraintsButtonDecode.gridx = 0;
+			gridBagConstraintsButtonDecode.gridy = 5;
+			GridBagConstraints gridBagConstraintsProgress = new GridBagConstraints();
+			gridBagConstraintsProgress.gridx = 1;
+			gridBagConstraintsProgress.gridy = 5;
+			GridBagConstraints gridBagConstraintsTest = new GridBagConstraints();
+			gridBagConstraintsTest.gridx = 2;
+			gridBagConstraintsTest.gridy = 5;
+
+			jPanel = new JPanel();
+			jPanel.setLayout(new GridBagLayout());
+			jPanel.add(getJLabelDico(), gridBagConstraintsLabelDico);
+			jPanel.add(getJSlider(), gridBagConstraintsSlider);
+			jPanel.add(getJLabelSize(), gridBagConstraintsLabelSize);
+			jPanel.add(getJLabelFileSrc(), gridBagConstraintsLabelFileSrc);
+			jPanel.add(getJLabelFileDest(), gridBagConstraintsLabelFileDest);
+			jPanel.add(getJTextFieldFileSrc(), gridBagConstraintsTextFieldFileSrc);
+			jPanel.add(getJTextFieldFileDest(), gridBagConstraintsTextFieldFileDest);
+			jPanel.add(getJButtonChooseFileSrc(), gridBagConstraintsButtonFileSrc);
+			jPanel.add(getJButtonChooseFileDest(), gridBagConstraintsButtonFileDest);
+			jPanel.add(getJButtonEncode(), gridBagConstraintsButtonEncode);
+			jPanel.add(getJButtonDecode(), gridBagConstraintsButtonDecode);
+			jPanel.add(getJProgressBar(), gridBagConstraintsProgress);
+			jPanel.add(getJButtonTest(), gridBagConstraintsTest);
+		}
+		return jPanel;
+	}
+
+	/**
+	 * This method initializes jButtonEncode	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	JButton getJButtonEncode() {
+		if (jButtonEncode == null) {
+			jButtonEncode = new JButton("Encode");
+			jButtonEncode.addActionListener(ihmListener);
+		}
+		return jButtonEncode;
+	}
+
+	/**
+	 * This method initializes jButtonDecode	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	JButton getJButtonDecode() {
+		if (jButtonDecode == null) {
+			jButtonDecode = new JButton("Decode");
+			jButtonDecode.addActionListener(ihmListener);
+		}
+		return jButtonDecode;
+	}
+
+	/**
+	 * This method initializes jButtonChooseFileSrc	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	JButton getJButtonChooseFileSrc() {
+		if (jButtonChooseFileSrc == null) {
+			jButtonChooseFileSrc = new JButton("...");
+			jButtonChooseFileSrc.addActionListener(ihmListener);
+		}
+		return jButtonChooseFileSrc;
+	}
+
+	/**
+	 * This method initializes jButtonChooseFileDest	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	JButton getJButtonChooseFileDest() {
+		if (jButtonChooseFileDest == null) {
+			jButtonChooseFileDest = new JButton("...");
+			jButtonChooseFileDest.addActionListener(ihmListener);
+		}
+		return jButtonChooseFileDest;
+	}
+
+	/**
+	 * This method initializes jLabelFileSrc	
+	 * 	
+	 * @return javax.swing.JLabel	
+	 */
+	JLabel getJLabelFileSrc() {
+		if (jLabelFileSrc == null) {
+			jLabelFileSrc = new JLabel();
+			jLabelFileSrc.setText("File to encode / decode : ");
+		}
+		return jLabelFileSrc;
+	}
+
+	/**
+	 * This method initializes jLabelFileDest	
+	 * 	
+	 * @return javax.swing.JLabel	
+	 */
+	JLabel getJLabelFileDest() {
+		if (jLabelFileDest == null) {
+			jLabelFileDest = new JLabel();
+			jLabelFileDest.setText("Destination file : ");
+		}
+		return jLabelFileDest;
+	}
+
+	/**
+	 * This method initializes jTextFieldFileSrc	
+	 * 	
+	 * @return javax.swing.JTextField	
+	 */
+	JTextField getJTextFieldFileSrc() {
+		if (jTextFieldFileSrc == null) {
+			jTextFieldFileSrc = new JTextField(19);
+		}
+		return jTextFieldFileSrc;
+	}
+
+	/**
+	 * This method initializes jTextFieldFileDest	
+	 * 	
+	 * @return javax.swing.JTextField	
+	 */
+	JTextField getJTextFieldFileDest() {
+		if (jTextFieldFileDest == null) {
+			jTextFieldFileDest = new JTextField(19);
+		}
+		return jTextFieldFileDest;
+	}
+
+	/**
+	 * This method initializes jSlider	
+	 * 	
+	 * @return javax.swing.JSlider	
+	 */
+	JSlider getJSlider() {
+		if (jSlider == null) {
+			jSlider = new JSlider(0,16,8);
+			jSlider.setMajorTickSpacing(4);
+			jSlider.setMinorTickSpacing(2);
+			jSlider.setPaintTicks(true);
+			jSlider.setPaintLabels(true);
+			jSlider.addChangeListener(ihmListener);
+		}
+		return jSlider;
+	}
+
+	/**
+	 * This method initializes jLabelDico	
+	 * 	
+	 * @return javax.swing.JLabel	
+	 */
+	JLabel getJLabelDico() {
+		if (jLabelDico == null) {
+			jLabelDico = new JLabel();
+			jLabelDico.setText("Dictionnary size : ");
+		}
+		return jLabelDico;
+	}
+
+	/**
+	 * This method initializes jLabelSize	
+	 * 	
+	 * @return javax.swing.JLabel	
+	 */
+	JLabel getJLabelSize() {
+		if (jLabelSize == null) {
+			jLabelSize = new JLabel();
+			jLabelSize.setText(""+getJSlider().getValue());
+		}
+		return jLabelSize;
+	}
+
+	/**
+	 * This method initializes jFileChooser	
+	 * 	
+	 * @return javax.swing.JFrame	
+	 */
+	JFileChooser getJFileChooser() {
+		if (jFileChooser == null) {
+			jFileChooser = new JFileChooser();
+		}
+		return jFileChooser;
+	}
+	
+	/**
+	 * This method initializes jProgressBar	
+	 * 	
+	 * @return javax.swing.JProgressBar	
+	 */
+	JProgressBar getJProgressBar() {
+		if (jProgressBar == null) {
+			jProgressBar = new JProgressBar(0,100);
+			jProgressBar.addChangeListener(ihmListener);
+		}
+		return jProgressBar;
+	}
+
+	/**
+	 * This method initializes jButtonTest	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	JButton getJButtonTest() {
+		if (jButtonTest == null) {
+			jButtonTest = new JButton("Test");
+			jButtonTest.addActionListener(ihmListener);
+		}
+		return jButtonTest;
+	}
+
+	/**
+	 * This method initializes progressMonitorDecode	
+	 * 	
+	 * @return javax.swing.JButton	
+	 *
+	IhmProgressMonitor getThreadProgress() {
+		if (threadProgress == null) {
+			threadProgress = new IhmProgressMonitor(this);
+		}
+		return threadProgress;
+	}*/
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Ihm ihm = new Ihm();
+		ihm.getJFrame().setVisible(true);
+	}
+	
+	public void test() {
+		System.out.println("Test en cours...");
+		threadProgress.start();
+		threadProgress.setProgressEncode(0,"zag");
+		
+		int i,c,r;
+		for (i=0 ; i<101 ; i++)
+		{
+			for (c=0 ; c<10000 ; c++)
+				for (r=0 ; r<10000 ; r++)
+				{
+					
+				}
+			threadProgress.setProgressEncode(i,"zag");
+			System.out.println(i);
+		}
+	}
+
+}
