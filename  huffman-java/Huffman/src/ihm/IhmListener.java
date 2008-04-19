@@ -19,9 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeSupport;
-
 import javax.swing.JFileChooser;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -51,6 +48,7 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 	 * Listener pour les boutons
 	 */
 	public void actionPerformed(ActionEvent e) {
+		
 		//bouton 'choisir fichier source'
 		if (e.getSource() == ihm.getJButtonChooseFileSrc())
 		{
@@ -79,49 +77,19 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 
 		}
 		
-		//bouton 'test'
-		else if (e.getSource() == ihm.getJButtonTest())
+		//bouton 'pause'
+		else if (e.getSource() == ihm.getJButtonPause())
 		{
-			new JupdateLaProgressBar(ihm.getProgressBar()).start();
+			
+		}
+		
+		//bouton 'cancel'
+		else if (e.getSource() == ihm.getJButtonCancel())
+		{
+			ihm.getJButtonCancel().setEnabled(false);
 		}
 
 	}
-	
-	class JupdateLaProgressBar extends Thread{
-		
-		ProgressBarWithEvent pbwe;
-		
-		public JupdateLaProgressBar(ProgressBarWithEvent pbwe){
-			this.pbwe = pbwe;
-		}
-		
-		public void run(){
-			System.out.println("Test en cours...");
-			
-			PropertyChangeSupport support = new PropertyChangeSupport(this);
-			support.addPropertyChangeListener(pbwe);
-			
-			int i;
-			for (i=0 ; i<=100 ; i++)
-			{
-				PropertyChangeEvent evt = new PropertyChangeEvent(this,"encode",0,new Integer(i));
-				support.firePropertyChange(evt);
-				try {
-					Thread.sleep(180);
-				}
-				catch (InterruptedException e) {e.getMessage();}
-				System.out.println(i);
-			}
-		}
-	}
-	
-	/*public void progress(int i) {
-		String mess = String.format("Completed %d%%.\n", i);
-		ihm.getProgressMonitorEncode().setNote(mess);
-		ihm.getProgressMonitorEncode().setProgress(i);
-		ihm.getJProgressBar().setValue(i);
-		ihm.getJProgressBar().repaint();
-	}*/
 
 	public void windowActivated(WindowEvent e) {}
 		

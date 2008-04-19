@@ -6,9 +6,6 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeSupport;
-
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -32,7 +29,8 @@ public class Ihm {
 	private JLabel jLabelSize = null;  //  @jve:decl-index=0:visual-constraint="992,121"
 	private	JFileChooser jFileChooser;
 	private ProgressBarWithEvent progressBar = null;  //  @jve:decl-index=0:visual-constraint="654,45"
-	private JButton jButtonTest = null;  //  @jve:decl-index=0:visual-constraint="603,133"
+	private JButton jButtonCancel = null;  //  @jve:decl-index=0:visual-constraint="603,133"
+	private JButton jButtonPause = null;  //  @jve:decl-index=0:visual-constraint="665,100"
 
 	/**
 	 * This method initializes ihmListener	
@@ -111,10 +109,13 @@ public class Ihm {
 			gridBagConstraintsButtonDecode.gridy = 5;
 			GridBagConstraints gridBagConstraintsProgress = new GridBagConstraints();
 			gridBagConstraintsProgress.gridx = 1;
-			gridBagConstraintsProgress.gridy = 5;
-			GridBagConstraints gridBagConstraintsTest = new GridBagConstraints();
-			gridBagConstraintsTest.gridx = 2;
-			gridBagConstraintsTest.gridy = 5;
+			gridBagConstraintsProgress.gridy = 4;
+			GridBagConstraints gridBagConstraintsCancel = new GridBagConstraints();
+			gridBagConstraintsCancel.gridx = 2;
+			gridBagConstraintsCancel.gridy = 5;
+			GridBagConstraints gridBagConstraintsPause = new GridBagConstraints();
+			gridBagConstraintsPause.gridx = 1;
+			gridBagConstraintsPause.gridy = 5;
 
 			jPanel = new JPanel();
 			jPanel.setLayout(new GridBagLayout());
@@ -130,7 +131,8 @@ public class Ihm {
 			jPanel.add(getJButtonEncode(), gridBagConstraintsButtonEncode);
 			jPanel.add(getJButtonDecode(), gridBagConstraintsButtonDecode);
 			jPanel.add(getProgressBar(), gridBagConstraintsProgress);
-			jPanel.add(getJButtonTest(), gridBagConstraintsTest);
+			jPanel.add(getJButtonCancel(), gridBagConstraintsCancel);
+			jPanel.add(getJButtonPause(), gridBagConstraintsPause);
 		}
 		return jPanel;
 	}
@@ -306,16 +308,28 @@ public class Ihm {
 	}
 
 	/**
-	 * This method initializes jButtonTest	
+	 * This method initializes jButtonCancel	
 	 * 	
 	 * @return javax.swing.JButton	
 	 */
-	JButton getJButtonTest() {
-		if (jButtonTest == null) {
-			jButtonTest = new JButton("Test");
-			jButtonTest.addActionListener(getIhmListener());
+	JButton getJButtonCancel() {
+		if (jButtonCancel == null) {
+			jButtonCancel = new JButton("Cancel");
+			jButtonCancel.addActionListener(getIhmListener());
 		}
-		return jButtonTest;
+		return jButtonCancel;
+	}
+
+	/**
+	 * This method initializes jButtonPause	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	JButton getJButtonPause() {
+		if (jButtonPause == null) {
+			jButtonPause = new JButton("Pause");
+		}
+		return jButtonPause;
 	}
 
 	/**
@@ -325,5 +339,4 @@ public class Ihm {
 		Ihm ihm = new Ihm();
 		ihm.getJFrame().setVisible(true);
 	}
-
 }

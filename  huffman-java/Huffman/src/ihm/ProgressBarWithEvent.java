@@ -17,9 +17,10 @@ public class ProgressBarWithEvent extends JProgressBar implements PropertyChange
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		//if (evt.getPropertyName().equals("encode")){
+		if (evt.getPropertyName().equals("encode")){
 			this.setValue((Integer)evt.getNewValue());
-		//}
+			//System.out.println("zag");
+		}
 	}
 	
 }
