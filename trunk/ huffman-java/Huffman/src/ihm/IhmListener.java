@@ -1,11 +1,11 @@
 /**
  * ENSICAEN
- * 6 Bd. Maréchal Juin
+ * 6 Bd. Marï¿½chal Juin
  * 14050 Caen
  *
  * @class IhmListener.java
  * 
- * Regroupe les listeners utiles à l'ihm
+ * Regroupe les listeners utiles ï¿½ l'ihm
  * 
  * @author Romain Macureau <macureau@ecole.ensicaen.fr>
  * 
@@ -19,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeSupport;
 
 import javax.swing.JFileChooser;
 import javax.swing.JSlider;
@@ -80,9 +82,37 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 		//bouton 'test'
 		else if (e.getSource() == ihm.getJButtonTest())
 		{
-			ihm.test();
+			new JupdateLaProgressBar(ihm.getProgressBar()).start();
 		}
 
+	}
+	
+	class JupdateLaProgressBar extends Thread{
+		
+		ProgressBarWithEvent pbwe;
+		
+		public JupdateLaProgressBar(ProgressBarWithEvent pbwe){
+			this.pbwe = pbwe;
+		}
+		
+		public void run(){
+			System.out.println("Test en cours...");
+			
+			PropertyChangeSupport support = new PropertyChangeSupport(this);
+			support.addPropertyChangeListener(pbwe);
+			
+			int i;
+			for (i=0 ; i<=100 ; i++)
+			{
+				PropertyChangeEvent evt = new PropertyChangeEvent(this,"encode",0,new Integer(i));
+				support.firePropertyChange(evt);
+				try {
+					Thread.sleep(180);
+				}
+				catch (InterruptedException e) {e.getMessage();}
+				System.out.println(i);
+			}
+		}
 	}
 	
 	/*public void progress(int i) {
