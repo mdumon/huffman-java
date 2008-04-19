@@ -325,30 +325,5 @@ public class Ihm {
 		Ihm ihm = new Ihm();
 		ihm.getJFrame().setVisible(true);
 	}
-	
-	public void test() {
-		System.out.println("Test en cours...");
-		
-		PropertyChangeSupport support = new PropertyChangeSupport(getJFrame());
-		support.addPropertyChangeListener(getProgressBar());
-		
-		int i,c,r;
-		for (i=0 ; i<=100 ; i++)
-		{
-			/*for (c=0 ; c<10000 ; c++)
-				for (r=0 ; r<10000 ; r++)
-				{
-					
-				}*/
-				
-			PropertyChangeEvent evt = new PropertyChangeEvent(getJFrame(),"encode",0,new Integer(i));
-			support.firePropertyChange(evt);
-			try {
-				Thread.sleep(180);
-			}
-			catch (InterruptedException e) {e.getMessage();}
-			System.out.println(i);
-		}
-	}
 
 }
