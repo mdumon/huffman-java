@@ -1,15 +1,18 @@
 package ihm;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.Dimension;
-import javax.swing.JButton;
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
+
+import Algo.Huffmaneur;
 
 public class Ihm {
 
@@ -56,6 +59,7 @@ public class Ihm {
 			jFrame.setResizable(false);
 			jFrame.setContentPane(getJPanel());
 			jFrame.addWindowListener(getIhmListener());
+			initButtonsStates(true);
 		}
 		return jFrame;
 	}
@@ -303,7 +307,7 @@ public class Ihm {
 	ProgressBarWithEvent getProgressBar() {
 		if (progressBar == null) {
 			progressBar = new ProgressBarWithEvent();
-			//progressBar.addChangeListener(getIhmListener());
+			progressBar.addPropertyChangeListener(getIhmListener());
 		}
 		return progressBar;
 	}
@@ -329,9 +333,40 @@ public class Ihm {
 	JButton getJButtonPause() {
 		if (jButtonPause == null) {
 			jButtonPause = new JButton("Pause");
+			jButtonPause.addActionListener(getIhmListener());
 		}
 		return jButtonPause;
 	}
+	
+	Huffmaneur huffmaneur;
+	Huffmaneur getHuffmaneur() {
+		/* if(huffmaneur.isCanceled())
+			huffmaneur = null; */
+		
+		return huffmaneur;
+	}
+	void setHuffmaneur(Huffmaneur huffmaneur) {
+		this.huffmaneur = huffmaneur;
+	}
+	
+	public void initButtonsStates(boolean init){		
+		if(init){
+			getJButtonDecode().setEnabled(true);
+			getJButtonEncode().setEnabled(true);
+			getJButtonCancel().setEnabled(false);
+			getJButtonPause().setEnabled(false);
+		}else{
+			getJButtonDecode().setEnabled(false);
+			getJButtonEncode().setEnabled(false);
+			getJButtonCancel().setEnabled(true);
+			getJButtonPause().setEnabled(true);
+		}
+		
+		getJButtonPause().setText("pause");
+		
+		getProgressBar().setValue(0);
+	}
+	
 
 	/**
 	 * @param args
