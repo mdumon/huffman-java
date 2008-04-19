@@ -17,6 +17,8 @@ package Tri;
 
 import java.util.Random;
 
+import Tri.Test.Tri;
+
 import Arbre.Leaf;
 import BitUtils.BitArray;
 
