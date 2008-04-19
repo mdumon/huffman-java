@@ -1,6 +1,6 @@
 /**
  * ENSICAEN
- * 6 Bd. Maréchal Juin
+ * 6 Bd. Marï¿½chal Juin
  * 14050 Caen
  *
  * @class Tri.java
@@ -13,7 +13,7 @@
  * 
  */
 
-package Tri;
+package Tri.Test;
 
 import java.util.Arrays;
 
@@ -24,7 +24,7 @@ import java.util.Arrays;
 public class Tri {
 	
  	/**
- 	* Méthode de tri : les objets du tableau doivent implémenter Comparable
+ 	* Mï¿½thode de tri : les objets du tableau doivent implï¿½menter Comparable
  	* @param Object[] tab
  	* @return void
  	*/
@@ -33,7 +33,7 @@ public class Tri {
 	}
 	
 	/**
- 	* Méthode de tri d'entiers
+ 	* Mï¿½thode de tri d'entiers
  	* @param int[] tab
  	* @return void
  	*/
