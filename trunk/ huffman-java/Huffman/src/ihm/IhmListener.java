@@ -54,7 +54,7 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 		{
 			int returnVal = ihm.getJFileChooser().showOpenDialog(null);
 			if(returnVal == JFileChooser.APPROVE_OPTION)
-				ihm.getJTextFieldFileSrc().setText(ihm.getJFileChooser().getSelectedFile().getName());
+				ihm.getJTextFieldFileSrc().setText(ihm.getJFileChooser().getSelectedFile().getAbsolutePath());
 		}
 
 		//bouton 'choisir fichier destination'
@@ -62,7 +62,7 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 		{
 			int returnVal = ihm.getJFileChooser().showOpenDialog(null);
 			if(returnVal == JFileChooser.APPROVE_OPTION)
-				ihm.getJTextFieldFileDest().setText(ihm.getJFileChooser().getSelectedFile().getName());
+				ihm.getJTextFieldFileDest().setText(ihm.getJFileChooser().getSelectedFile().getAbsolutePath());
 		}
 
 		//bouton 'encoder'

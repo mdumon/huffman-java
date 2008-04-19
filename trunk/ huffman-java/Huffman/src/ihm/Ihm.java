@@ -53,6 +53,7 @@ public class Ihm {
 		if (jFrame == null) {
 			jFrame = new JFrame("Huffmanzip");
 			jFrame.setSize(new Dimension(515, 201));
+			jFrame.setResizable(false);
 			jFrame.setContentPane(getJPanel());
 			jFrame.addWindowListener(getIhmListener());
 		}
