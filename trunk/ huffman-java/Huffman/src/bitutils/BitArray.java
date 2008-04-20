@@ -150,6 +150,19 @@ public class BitArray implements Iterable<Boolean>{
 	}
 	
 	@Override
+	public boolean equals(Object ba){
+		if(!(ba instanceof BitArray)) return false;
+		BitArray b = (BitArray)ba;
+		
+		if(b.size() != size()) return false;
+		
+		for(int i = 0; i < size(); i++)
+			if(get(i) != b.get(i)) return false;
+		
+		return true;
+	}
+	
+	@Override
 	public Iterator<Boolean> iterator() {
 		return bList.listIterator();
 	}
