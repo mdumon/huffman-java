@@ -40,9 +40,11 @@ public class Leaf implements Comparable<Leaf> {
 	public int getFreq() {
 		return freq;
 	}
-	
 	public void setFreq(int freq) {
 		this.freq = freq;
+	}
+	public void incFreq(){
+		this.freq++;
 	}
 	
 	/**

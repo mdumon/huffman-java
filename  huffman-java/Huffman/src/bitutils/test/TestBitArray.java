@@ -127,7 +127,7 @@ public class TestBitArray {
 		for(int i = 0; i < 8; i++)
 			ba.remove(1);
 		
-		assert(ba.toByteArray()[0] == 0xD5 );
+		assertTrue(ba.toByteArray()[0] == (byte)0xD5 );
 	}
 
 
@@ -135,18 +135,27 @@ public class TestBitArray {
 	public void testSizeClearIsEmpty() {
 		BitArray ba = new BitArray(testArray,16);
 		
-		assert(ba.size() == 16);
+		assertTrue(ba.size() == 16);
 		ba.clear();
-		assert(ba.size() == 0);
-		assert(ba.isEmpty());
+		assertTrue(ba.size() == 0);
+		assertTrue(ba.isEmpty());
 	}
 
 	@Test
 	public void testGetSet() {
 		BitArray ba = new BitArray(testArray,16);
 		
-		assert(ba.get(9));
+		assertTrue(ba.get(9));
 		ba.set(9,false);
-		assert(!ba.get(9));
+		assertTrue(!ba.get(9));
+	}
+	
+	@Test
+	public void testEquals() {
+		BitArray ba = new BitArray(testArray,16);
+		BitArray bb = new BitArray(testArray,16);
+		
+		assertTrue(ba != bb);
+		assertTrue(ba.equals(bb));
 	}
 }
