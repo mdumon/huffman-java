@@ -6,10 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
-import arbre.Leaf;
 import bitutils.BitArray;
 import bitutils.BitInputStream;
 
@@ -44,7 +43,7 @@ public class HuffmanEncode extends Huffmaneur {
 	@Override
 	protected void huffmaner() {
 		BitInputStream bis;
-		List<Leaf> list;
+		List<FreqCode> list;
 		BitArray ba;
 		
 		/* On ouvre l'inputStream */
@@ -53,14 +52,14 @@ public class HuffmanEncode extends Huffmaneur {
 		} catch (FileNotFoundException ignore) { return; }
 		
 		/* On créer un tableau de fréquence */
-		list = new ArrayList<Leaf>();
+		list = new ArrayList<FreqCode>();
 		boolean found;
 		try {
 			while(bis.availableBits() > 0){
 				ba = bis.readBits(Math.min(getDicoSize(),bis.availableBits()));
 				
 				found = false;
-				for(Leaf leaf: list){
+				for(FreqCode leaf: list){
 					if(ba.equals(leaf.getKey())){
 						leaf.incFreq();
 						found = true;
@@ -68,7 +67,7 @@ public class HuffmanEncode extends Huffmaneur {
 					}	
 				}
 				if(!found)
-					list.add(new Leaf(ba,1));
+					list.add(new FreqCode(ba,1));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

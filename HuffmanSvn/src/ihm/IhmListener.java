@@ -134,9 +134,9 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 			
 			else if(e.getPropertyName().equals("paused")){
 				if((Boolean)e.getNewValue())
-					ihm.getJButtonPause().setText("Resume");
+					ihm.getJButtonPause().setText("resume");
 				else
-					ihm.getJButtonPause().setText("Pause");
+					ihm.getJButtonPause().setText("pause");
 				ihm.getJButtonPause().setEnabled(true);
 			}
 			
