@@ -116,12 +116,14 @@ public class Ihm {
 			GridBagConstraints gridBagConstraintsProgress = new GridBagConstraints();
 			gridBagConstraintsProgress.gridx = 1;
 			gridBagConstraintsProgress.gridy = 4;
+			gridBagConstraintsProgress.fill = GridBagConstraints.HORIZONTAL;
 			GridBagConstraints gridBagConstraintsCancel = new GridBagConstraints();
 			gridBagConstraintsCancel.gridx = 2;
 			gridBagConstraintsCancel.gridy = 5;
 			GridBagConstraints gridBagConstraintsPause = new GridBagConstraints();
 			gridBagConstraintsPause.gridx = 1;
 			gridBagConstraintsPause.gridy = 5;
+			//gridBagConstraintsPause.fill = GridBagConstraints.VERTICAL;
 
 			jPanel = new JPanel();
 			jPanel.setLayout(new GridBagLayout());
@@ -363,7 +365,7 @@ public class Ihm {
 			getJButtonPause().setEnabled(true);
 		}
 		
-		getJButtonPause().setText("pause");
+		getJButtonPause().setText("Pause");
 		
 		getProgressBar().setValue(0);
 	}
