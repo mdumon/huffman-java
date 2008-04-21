@@ -95,6 +95,7 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 		else if (e.getSource() == ihm.getJButtonPause())
 		{
 			ihm.getJButtonPause().setEnabled(false);
+			ihm.getHuffmaneur().setPaused(!ihm.getHuffmaneur().isPaused());
 		}
 		
 		//bouton 'cancel'
@@ -136,7 +137,6 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 					ihm.getJButtonPause().setText("Resume");
 				else
 					ihm.getJButtonPause().setText("Pause");
-				ihm.getJButtonPause().setSize(100,ihm.getJButtonPause().getHeight());
 				ihm.getJButtonPause().setEnabled(true);
 			}
 			
