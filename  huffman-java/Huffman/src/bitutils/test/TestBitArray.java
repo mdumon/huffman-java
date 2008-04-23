@@ -67,6 +67,12 @@ public class TestBitArray {
 	}
 	
 	@Test
+	public void testremoveByteArray() throws ArrayTooShortException {
+		BitArray b = new BitArray(testArray,testArray.length*8);
+		assertArrayEquals(testArray, b.removeByteArray());
+	}
+	
+	@Test
 	public void testIterator() {
 		BitArray ba = new BitArray(testArray,16);
 		boolean[] boolTab = new boolean[]{ true,  true,  true,  true,
