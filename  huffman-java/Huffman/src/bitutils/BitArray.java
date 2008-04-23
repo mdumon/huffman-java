@@ -88,6 +88,13 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 		}
 	}
 	
+	public BitArray(BitArray ba){
+		this();
+		
+		for(boolean b : ba)
+			add(b);
+	}
+	
 	public Endianness getBitEndianness(){
 		return (endianShift == 0)?Endianness.LITTLE_ENDIAN:Endianness.BIG_ENDIAN;
 	}
@@ -169,16 +176,22 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 		return bList.listIterator();
 	}
 	
-	public void add(boolean b){
+	public BitArray add(boolean b){
 		bList.add(b);
+		return this;
 	}
 	
-	public void add(int index,boolean b){
+	public BitArray add(int index,boolean b){
 		bList.add(index,b);
+		return this;
 	}
 	
 	public boolean remove(int index){
 		return bList.remove(index);
+	}
+	
+	public boolean removeLast(){
+		return bList.remove(bList.size()-1);
 	}
 	
 	public void clear(){
@@ -191,6 +204,10 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 	
 	public void set(int index, boolean value){
 		bList.set(index, value);
+	}
+	
+	public void setLast(boolean value){
+		bList.set(bList.size() - 1, value);
 	}
 	
 	public boolean isEmpty(){

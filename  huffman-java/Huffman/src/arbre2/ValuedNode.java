@@ -2,10 +2,11 @@ package arbre2;
 
 import algo2.FreqCode;
 
-public class ValuedNode extends Node{
+public class ValuedNode extends Node<FreqCode>{
+	private static final long serialVersionUID = 1L;
 	
 	public ValuedNode(FreqCode fc){
-		super(fc.getKey());
+		super(fc);
 		setFreq(fc.getFreq());
 	}
 	
@@ -20,7 +21,7 @@ public class ValuedNode extends Node{
 		return freq;
 	}
 
-	public void setFreq(int freq) {
+	protected void setFreq(int freq) {
 		this.freq = freq;
 	}
 	

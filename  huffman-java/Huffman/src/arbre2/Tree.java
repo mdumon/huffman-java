@@ -1,21 +1,24 @@
 package arbre2;
 
+import java.io.Serializable;
 
-public class Tree {
+public class Tree<T>  implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
 	public Tree(){
-		root = new Node();
+		root = new Node<T>();
 	}
 	
-	public Tree(Node root){
+	public Tree(Node<T> root){
 		setRoot(root);
 	}
 	
-	private Node root;
-	public Node getRoot(){
+	private Node<T> root;
+	public Node<T> getRoot(){
 		return root;
 	}
-	protected void setRoot(Node root){
+	protected void setRoot(Node<T> root){
 		this.root = root;
 	}
 }

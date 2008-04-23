@@ -1,6 +1,7 @@
 package algo2;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -52,21 +53,19 @@ public class HuffmanEncode extends Huffmaneur {
 		List<FreqCode> list;
 		BitArray ba;
 		
-		/* On ouvre l'inputStream */
+		/* On ouvre l'inputFile */
 		try {
 			bis = new BitInputStream(new BufferedInputStream(new FileInputStream(getInputFile())));
 		} catch (FileNotFoundException ignore) { return; }
 		
-		try {
-			bos = new BitOutputStream(new FileOutputStream(getOutputFile()));
-		} catch (FileNotFoundException ignore) { return; }
-		
-		/* On créer un tableau de fréquence */
+		System.out.println("Création du tableau de fréquence, dico : " + getDicoSize());
+		/* On créer un tableau de fréquence basé sur l'inputFile */
 		list = new ArrayList<FreqCode>();
 		boolean found;
 		try {
 			while(true){
 				ba = bis.readBits(getDicoSize());
+				System.out.println("lu : " + ba + "\nsize : " + ba.size());
 				if(ba.size() != getDicoSize()) break;
 				
 				found = false;
@@ -84,29 +83,89 @@ public class HuffmanEncode extends Huffmaneur {
 			e.printStackTrace();
 		}
 		
-		
+		/* On ferme l'inputFile */
 		try {
 			bis.close();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
+		System.out.println("Tri du tableau de fréquence");
+		/* On tri notre tableau de fréquence */
 		Collections.sort(list);
+		FreqCode[] fca = list.toArray(new FreqCode[0]);
 		
-		// On construit notre arbre de huffman
+		System.out.println("Construction de l'huffman tree");
+		/* On construit notre arbre d'huffman */
 		HuffmanTree ht = new HuffmanTree();
 		
+		/* On obtient dans notre tableau de FreqCode l'encodage des elements */
+		ht.Build(fca);
+		
+		
+		int tota = 0;
+		int totb = 0;
+		System.out.println("Sérialisation de l'arbre");
+		/* On ouvre l'outputFile */
+		try {
+			bos = new BitOutputStream(new FileOutputStream(getOutputFile()));
+		} catch (FileNotFoundException ignore) { return; }
+		
+		/* On sérialise l'arbre au début du fichier */
 		try {
 			new ObjectOutputStream(bos).writeObject(ht);
 		} catch (IOException e) {}
 		
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			new ObjectOutputStream(baos).writeObject(ht);
+			tota += baos.toByteArray().length;
+		} catch (IOException e) {}
+		System.out.println("Arbre lenght => " + tota);
 		
-		//ht.Build(list.toArray());
+		System.out.println("Encodage de l'inputStream");
+		/* On réouvre notre inputStream */
+		try {
+			bis = new BitInputStream(new BufferedInputStream(new FileInputStream(getInputFile())));
+		} catch (FileNotFoundException ignore) { return; }
 		
-		// Il nous remplit nos valeurs encodées
-		//ht.FillFreqCode(fca)
+		//int i = 0;
 
+		/* On encode à la volée notre inputStream */
+		try {
+			while(true){
+				ba = bis.readBits(getDicoSize());
+				if(ba.size() != getDicoSize()) break;
+				
+				found = false;
+				for(FreqCode fc: list){
+					if(ba.equals(fc.getKey())){
+						//System.out.println("Ecriture du bit " + i++ + "[" + ba + "] => [" + fc.getEncValue() + "]" );
+						tota += fc.getEncValue().size();
+						totb += 8;
+						bos.writeBits(fc.getEncValue());
+						found = true;
+						break;
+					}
+				}
+				if(!found){
+					System.out.println("Erreur encodage inconnu pour ce BitArray");
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Avant : " + totb);
+		System.out.println("Après : " + tota);
 		
+		
+		/* On ferme les différentes streams */
+		try {
+			bos.close();
+			bis.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
