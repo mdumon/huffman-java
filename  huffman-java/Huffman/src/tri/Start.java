@@ -15,13 +15,6 @@
 
 package tri;
 
-import java.util.Random;
-
-import tri.test.Tri;
-
-import bitutils.BitArray;
-
-import algo2.FreqCode;
 
 
 
@@ -30,7 +23,7 @@ import algo2.FreqCode;
  */
 
 public class Start {
-
+	/*
 	public static void main(String args[]) {
 		FreqCode[] tab = new FreqCode[2500000];
 		
@@ -48,5 +41,6 @@ public class Start {
 
 		System.out.println("\nTableau trié :");
 	}
+	*/
 
 }
