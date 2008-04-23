@@ -1,6 +1,5 @@
-package algo1;
+package algo;
 
-import algo1.Huffmaneur;
 
 public class FakeHuffmaneur extends Huffmaneur {
 
