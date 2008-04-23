@@ -1,4 +1,4 @@
-package algo;
+package algo2;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
+import algo.Huffmaneur;
 import arbre.Leaf;
 import bitutils.BitArray;
 import bitutils.BitInputStream;
