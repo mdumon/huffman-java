@@ -1,4 +1,4 @@
-package arbre;
+package arbre1;
 
 import bitutils.BitArray;
 

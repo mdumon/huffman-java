@@ -1,4 +1,4 @@
-package algo;
+package algo1;
 
 public class Arbre {
 	
