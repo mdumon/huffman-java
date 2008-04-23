@@ -11,4 +11,12 @@ public class ValueNode extends Node {
 		this.freq = freq;
 	}
 	
+	public BitArray getValue(){
+		return this.value;
+	}
+	
+	public int getFreq(){
+		return this.freq;
+	}
+	
 }
