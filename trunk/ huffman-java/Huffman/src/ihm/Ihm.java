@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
-import algo.Huffmaneur;
+import algo2.Huffmaneur;
 
 
 public class Ihm {

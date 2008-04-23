@@ -21,7 +21,7 @@ import tri.test.Tri;
 
 import bitutils.BitArray;
 
-import arbre2.Leaf;
+import algo2.FreqCode;
 
 
 
@@ -32,13 +32,13 @@ import arbre2.Leaf;
 public class Start {
 
 	public static void main(String args[]) {
-		Leaf[] tab = new Leaf[2500000];
+		FreqCode[] tab = new FreqCode[2500000];
 		
 		Random r = new Random();
 		int i;
 		for (i=0 ; i<2500000 ; i++){
 			
-			tab[i] = new Leaf(new BitArray(), r.nextInt(500));
+			tab[i] = new FreqCode(new BitArray(), r.nextInt(500));
 			
 		}
 			
