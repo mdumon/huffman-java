@@ -11,12 +11,14 @@
  * @version 0.0.1 - 19/04/08
  */
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-public class BitArray implements Iterable<Boolean>{
+public class BitArray implements Iterable<Boolean>, Serializable{
+	private static final long serialVersionUID = 1L;
 	
 	/* liste utilisée pour stocker en interne les bits */ 
 	private List<Boolean> bList;
@@ -197,5 +199,13 @@ public class BitArray implements Iterable<Boolean>{
 	
 	public int size(){
 		return bList.size();
+	}
+	
+	@Override
+	public String toString(){
+		String s = "";
+		for(boolean b : this)
+			s += (b)?"1":"0";
+		return s;
 	}
 }

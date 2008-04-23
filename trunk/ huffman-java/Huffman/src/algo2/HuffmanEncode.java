@@ -65,13 +65,14 @@ public class HuffmanEncode extends Huffmaneur {
 		list = new ArrayList<FreqCode>();
 		boolean found;
 		try {
-			while(bis.availableBits() > 0){
-				ba = bis.readBits(Math.min(getDicoSize(),bis.availableBits()));
+			while(true){
+				ba = bis.readBits(getDicoSize());
+				if(ba.size() != getDicoSize()) break;
 				
 				found = false;
-				for(FreqCode leaf: list){
-					if(ba.equals(leaf.getKey())){
-						leaf.incFreq();
+				for(FreqCode fc: list){
+					if(ba.equals(fc.getKey())){
+						fc.incFreq();
 						found = true;
 						break;
 					}	
@@ -83,10 +84,24 @@ public class HuffmanEncode extends Huffmaneur {
 			e.printStackTrace();
 		}
 		
+		
+		try {
+			bis.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		Collections.sort(list);
 		
 		// On construit notre arbre de huffman
-		HuffmanTree ht = new arbre2.HuffmanTree();
+		HuffmanTree ht = new HuffmanTree();
+		
+		try {
+			new ObjectOutputStream(bos).writeObject(ht);
+		} catch (IOException e) {}
+		
+		
 		//ht.Build(list.toArray());
 		
 		// Il nous remplit nos valeurs encodées
