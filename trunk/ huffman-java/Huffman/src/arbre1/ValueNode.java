@@ -19,4 +19,8 @@ public class ValueNode extends Node {
 		return this.freq;
 	}
 	
+	public void incFreq(){
+		this.freq++;
+	}
+	
 }
