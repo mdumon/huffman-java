@@ -56,17 +56,18 @@ public class BitInputStream extends FilterInputStream{
 
 	/**
 	 * Reads the next Bit of data from the underlying stream.
-	 * @return the next bit of data
+	 * @return the next bit of data (0 <=> false, 1 <=> true), or -1 if end of file is reached
 	 * @throws IOException Thrown if something wrong happens when reading the stream.
 	 */
-	public synchronized boolean readBit() throws IOException{
+	public synchronized byte readBit() throws IOException{
 
 		/* Si bbIndex % 8 == 0 c'est que notre byteBuffer a été lu en entier,
 		 * on passe donc au byte suivant
 		 */
 		if((bbIndex % 8) == 0){
 			int bRead = super.read();
-			if(bRead == -1) throw new IOException("End of the underlying stream reached");
+			if(bRead == -1)
+				return (byte)-1;
 			
 			byteBuf = (byte)bRead;
 			bbIndex = 0;
@@ -76,8 +77,9 @@ public class BitInputStream extends FilterInputStream{
 		 * 2 solutions, soit on shift le mask vers la gauche et on le compare avec 0
 		 *              soit on shift le byte vers la droite qu'on le mask avec 1 et qu'on compare avec 1
 		 */
-		return (byteBuf & (1 << (endianShift - bbIndex++))) != 0;
-		// return ((byteBuf >> (endianShift - bbIndex++)) & 1) == 1;
+		
+		// return (byteBuf & (1 << (endianShift - bbIndex++))) != 0;
+		return (byte)((byteBuf >> (endianShift - bbIndex++)) & 1);
 	}
 	
 	/**
@@ -90,15 +92,19 @@ public class BitInputStream extends FilterInputStream{
 	 */
 	public synchronized BitArray readBits(int nbBits) throws IOException{
 		BitArray ba = new BitArray();
+		byte b;
 		
-		while(nbBits-- > 0)
-			ba.add(readBit());
-		
+		while(nbBits-- > 0){
+			b = readBit();
+			if(b == -1) break;
+			ba.add(readBit() == 1);
+		}
+			
 		return ba;
 	}
 	
-	private int markedBbIndex;
-	private byte markedByteBuf;
+	private int markedBbIndex = 0;
+	private byte markedByteBuf = 0;
 	/**
 	 * See 
 	 * 	the general contract of the <code>mark</code> 
@@ -157,9 +163,7 @@ public class BitInputStream extends FilterInputStream{
 		if(n <= 0) return 0;
 		
 		long i = n;
-		while(i-- > 0){
-			readBit();
-		}
+		while(i-- > 0 && (readBit() != -1));
 		
 		return n;
 	}

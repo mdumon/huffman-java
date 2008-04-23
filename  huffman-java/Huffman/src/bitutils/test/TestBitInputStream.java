@@ -76,7 +76,7 @@ public class TestBitInputStream {
 				ba = bis.readBits(16);
 				bis.reset();
 				for(boolean b : ba)
-					assertTrue( b == bis.readBit());
+					assertTrue( b == (bis.readBit() == 1));
 			}
 			
 			bis.close();
@@ -99,7 +99,7 @@ public class TestBitInputStream {
 		
 		try{
 			for(boolean b : testBoolTab)
-				assertTrue(b == bis.readBit());
+				assertTrue(b == (bis.readBit() == 1));
 			
 			bis.close();
 		}catch(IOException ioe1){

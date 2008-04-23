@@ -8,7 +8,7 @@ import bitutils.BitArray;
  * 
  *  
  * @author Romain Macureau <macureau@ecole.ensicaen.fr>
- * @author Franck Séhdéic <sehedic@ecole.ensicaen.fr>
+ * @author Franck Séhédic <sehedic@ecole.ensicaen.fr>
  * 
  * @version 0.0.3 - 2008-04-21
  * 
@@ -26,7 +26,7 @@ public class FreqCode implements Comparable<FreqCode> {
 	
 	public FreqCode(BitArray key,int freq){
 		setKey(key);
-		setFreq(0);
+		setFreq(freq);
 	}
 	
 	/**
