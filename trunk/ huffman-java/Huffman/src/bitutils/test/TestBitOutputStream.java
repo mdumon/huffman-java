@@ -1,6 +1,5 @@
 package bitutils.test;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
@@ -9,7 +8,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import bitutils.ArrayTooShortException;
 import bitutils.BitArray;
 import bitutils.BitOutputStream;
 

@@ -21,6 +21,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JSlider;
@@ -28,6 +30,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import algo.FakeHuffmaneur;
+import algo2.HuffmanEncode;
 
 
 /**
@@ -74,7 +77,29 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 		//bouton 'encoder'
 		else if (e.getSource() == ihm.getJButtonEncode())
 		{
-			ihm.setHuffmaneur(new FakeHuffmaneur());
+			//File inputFile = new File(ihm.getJTextFieldFileSrc().getText());
+			//File outputFile = new File(ihm.getJTextFieldFileDest().getText());
+			File inputFile = new File("/home/gbillou/testEncodage.txt");
+			File outputFile = new File("/home/gbillou/testEncodage.txt.2");
+			HuffmanEncode he = new HuffmanEncode();
+			
+			try{
+				he.setInputFile(inputFile);
+			}catch(FileNotFoundException ignored){
+				System.out.println("Erreur inputFile");
+				return;
+			}
+			
+			try{
+				he.setOutputFile(outputFile);
+			}catch(FileNotFoundException ignored){
+				System.out.println("Erreur outputFile");
+				return;
+			}
+
+			he.setDicoSize(ihm.getJSlider().getValue());
+			
+			ihm.setHuffmaneur(he);
 			ihm.getHuffmaneur().addPropertyChangeListener(ihm.getProgressBar());
 			ihm.getHuffmaneur().addPropertyChangeListener(this);
 			ihm.getHuffmaneur().start();

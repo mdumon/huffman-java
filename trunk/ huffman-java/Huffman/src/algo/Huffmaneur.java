@@ -85,7 +85,7 @@ public abstract class Huffmaneur extends Thread{
 	}
 	
 	private File outputFile;
-	void setOutputFile(File outputFile) throws FileNotFoundException{
+	public void setOutputFile(File outputFile) throws FileNotFoundException{
 		
 		if(outputFile.exists()){
 			boolean isDeleted;

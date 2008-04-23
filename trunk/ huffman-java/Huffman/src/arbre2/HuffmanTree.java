@@ -1,29 +1,59 @@
 package arbre2;
 
 import java.io.Serializable;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import algo2.FreqCode;
+import bitutils.BitArray;
 
-public class HuffmanTree extends Tree implements Serializable{
+public class HuffmanTree extends Tree<FreqCode> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	public void Build(FreqCode[] fcs){
-		SortedSet<ValuedNode> ss = new TreeSet<ValuedNode>();
+		List<ValuedNode> vns = new ArrayList<ValuedNode>();
 		
 		for(FreqCode fc : fcs)
-			ss.add(new ValuedNode(fc));
+			vns.add(new ValuedNode(fc));
 		
-		// on fait notre truc
+		/* Création de l'arbre */
+		ValuedNode vn0,vn1,vn2;
+		int vn0Freq;
+		int i;
+		while(vns.size() > 1){
+			vn1 = vns.remove(0);
+			vn2 = vns.remove(0);
+			
+			vn0 = new ValuedNode(vn1,vn2);
+			vn0Freq = vn0.getFreq();
+			
+			i = 0;
+			while(i < vns.size() && vn0Freq > vns.get(i).getFreq()) i++;
+			vns.add(i, vn0);
+		}
 		
+		/* On place la racine */
+		setRoot(vns.remove(0));
+	
+		/* On rempli le membre EncValue des FreqCodes */
+		parcoursArbre(getRoot(),new BitArray());
 		
-		setRoot(new ValuedNode(null,null)); // setroot sur le dernier de la liste
+		/* et pi là on a finit en fait :p */
 	}
 	
-	public void FillFreqCode(FreqCode[] fca){
-		// remplissage du champ EncValue des freqcodes
+	private void parcoursArbre(Node<FreqCode> n,BitArray codage){
+		if(n == null) return; // n'arrive jamais.. (normalement..)
+		
+		if(n.getValue() != null){
+			n.getValue().setEncValue(new BitArray(codage));
+			return;
+		}
+		
+		codage.add(false);
+		parcoursArbre(n.getLeftSon(),codage);
+		codage.setLast(true);
+		parcoursArbre(n.getRightSon(),codage);
+		codage.removeLast();
 	}
-
 }

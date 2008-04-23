@@ -1,5 +1,7 @@
 package algo2;
 
+import java.io.Serializable;
+
 import bitutils.BitArray;
 
 /**
@@ -13,16 +15,18 @@ import bitutils.BitArray;
  * @version 0.0.3 - 2008-04-21
  * 
  */
-public class FreqCode implements Comparable<FreqCode> {
-	
+public class FreqCode implements Comparable<FreqCode>,Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	/* la clef représentée par cette feuille */
 	private BitArray key;
 	
 	/* sa fréquence d'apparition */ 
-	private int freq;
+	transient private int freq;
 	
 	/* sa valeur encodée */
-	private BitArray encValue;
+	transient private BitArray encValue;
 	
 	public FreqCode(BitArray key,int freq){
 		setKey(key);
