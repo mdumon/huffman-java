@@ -21,7 +21,7 @@ import tri.test.Tri;
 
 import bitutils.BitArray;
 
-import arbre.Leaf;
+import arbre2.Leaf;
 
 
 
