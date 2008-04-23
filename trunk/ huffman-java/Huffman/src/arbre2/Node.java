@@ -3,8 +3,20 @@ package arbre2;
 import bitutils.BitArray;
 
 public class Node {
-	public Node(){
-		
+	public Node(){}
+	
+	public Node(BitArray ba){
+		this(null,null,ba);
+	}
+	
+	public Node(Node leftson,Node rightSon){
+		this(leftson,rightSon,null);
+	}
+	
+	public Node(Node leftson,Node rightSon,BitArray ba){
+		setLeftSon(leftSon);
+		setRightSon(rightSon);
+		setValue(ba);
 	}
 	
 	private Node leftSon = null;
