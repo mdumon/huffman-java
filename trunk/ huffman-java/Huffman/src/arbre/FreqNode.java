@@ -10,7 +10,6 @@ public class FreqNode extends Node {
 	}
 	
 	public FreqNode(int freq, Node left, Node right){
-		setEstFeuille(false);
 		this.freq = freq;
 		this.left = left;
 		this.right = right;

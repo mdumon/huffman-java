@@ -7,7 +7,6 @@ public class ValueNode extends Node {
 	private int freq;
 	
 	public ValueNode(BitArray value, int freq){
-		setEstFeuille(true);
 		this.value = value;
 		this.freq = freq;
 	}
