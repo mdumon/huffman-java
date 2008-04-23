@@ -1,6 +1,5 @@
 package arbre2;
 
-import algo2.FreqCode;
 
 public class Tree {
 	
@@ -12,15 +11,11 @@ public class Tree {
 		setRoot(root);
 	}
 	
-	public void Build(FreqCode[] fc){
-		
-	}
-	
 	private Node root;
 	public Node getRoot(){
 		return root;
 	}
-	private void setRoot(Node root){
+	protected void setRoot(Node root){
 		this.root = root;
 	}
 }
