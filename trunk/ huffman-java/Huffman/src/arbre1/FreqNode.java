@@ -1,4 +1,4 @@
-package arbre;
+package arbre1;
 
 public class FreqNode extends Node {
 	private int freq;
