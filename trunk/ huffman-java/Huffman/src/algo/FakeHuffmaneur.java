@@ -1,4 +1,4 @@
-package algo2;
+package algo;
 
 import algo.Huffmaneur;
 
