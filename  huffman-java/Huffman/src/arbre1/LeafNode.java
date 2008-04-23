@@ -9,4 +9,7 @@ public class LeafNode extends Node {
 		this.value = value;
 	}
 	
+	public BitArray getValue(){
+		return this.value;
+	}
 }

@@ -14,4 +14,16 @@ public class FreqNode extends Node {
 		this.left = left;
 		this.right = right;
 	}
+	
+	public Node getLeft(){
+		return this.left;
+	}
+	
+	public Node getRight(){
+		return this.right;
+	}
+	
+	public int getFreq(){
+		return this.freq;
+	}
 }
