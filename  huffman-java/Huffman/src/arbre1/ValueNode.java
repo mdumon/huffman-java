@@ -27,7 +27,7 @@ public class ValueNode extends Node {
 		boolean resultat = true;
 		
 		if (o instanceof ValueNode){
-			resultat = ((ValueNode)o).getValue() == this.value;
+			resultat = ((ValueNode)o).getValue().equals(this.value);
 		} else resultat = false;
 		
 		return resultat;
