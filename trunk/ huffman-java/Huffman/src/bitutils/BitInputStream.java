@@ -97,7 +97,7 @@ public class BitInputStream extends FilterInputStream{
 		while(nbBits-- > 0){
 			b = readBit();
 			if(b == -1) break;
-			ba.add(readBit() == 1);
+			ba.add(b == 1);
 		}
 			
 		return ba;
