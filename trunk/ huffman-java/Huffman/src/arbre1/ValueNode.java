@@ -23,4 +23,14 @@ public class ValueNode extends Node {
 		this.freq++;
 	}
 	
+	public boolean equals(Object o){
+		boolean resultat = true;
+		
+		if (o instanceof ValueNode){
+			resultat = ((ValueNode)o).getValue() == this.value;
+		} else resultat = false;
+		
+		return resultat;
+	}
+	
 }
