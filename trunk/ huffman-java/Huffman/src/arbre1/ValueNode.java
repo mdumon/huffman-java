@@ -1,8 +1,13 @@
 package arbre1;
 
+import java.io.Serializable;
+
 import bitutils.BitArray;
 
-public class ValueNode extends Node {
+public class ValueNode implements Node, Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	private BitArray value;
 	private int freq;
 	
@@ -23,6 +28,22 @@ public class ValueNode extends Node {
 		this.freq++;
 	}
 	
+	public void setFreq(int freq) {
+		this.freq = freq;
+	}
+
+	public int getValToCompare() {
+		return this.getFreq();
+	}
+	
+	public int compareTo(Node node) {
+		return this.getValToCompare() - node.getValToCompare();
+	}
+	
+	public String toString() {
+		return "";
+	}
+
 	public boolean equals(Object o){
 		boolean resultat = true;
 		
@@ -32,5 +53,4 @@ public class ValueNode extends Node {
 		
 		return resultat;
 	}
-	
 }
