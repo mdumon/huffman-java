@@ -22,6 +22,9 @@ public class Arbre implements Serializable {
 	}
 	
 	public String toString() {
-		return "";
+		String res = "";
+		for (Node n : this.getFrequences())
+			res += n;
+		return res;
 	}
 }

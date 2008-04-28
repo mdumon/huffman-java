@@ -41,7 +41,7 @@ public class ValueNode implements Node, Serializable {
 	}
 	
 	public String toString() {
-		return "";
+		return "ValueNode : "+this.getValue()+"\n";
 	}
 
 	public boolean equals(Object o){
