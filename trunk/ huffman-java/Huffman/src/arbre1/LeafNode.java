@@ -21,18 +21,17 @@ public class LeafNode implements Node, Serializable {
 		this.value = value;
 	}
 	
-	//n'aura pas à être comparé
+	//n'aura pas ï¿½ ï¿½tre comparï¿½
 	public int getValToCompare() {
 		return 0;
 	}
 	
-	//n'aura pas à être comparé
+	//n'aura pas ï¿½ ï¿½tre comparï¿½
 	public int compareTo(Node node) {
 		return 0;
 	}
 	
 	public String toString() {
-		String res = "LeafNode "+this.getValue();
-		return "";
+		return "LeafNode "+this.getValue();
 	}
 }
