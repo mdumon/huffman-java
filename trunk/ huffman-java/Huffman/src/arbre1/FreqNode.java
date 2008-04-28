@@ -24,7 +24,7 @@ public class FreqNode implements Node, Serializable {
 		return freq;
 	}
 	
-	public void setL(int freq) {
+	public void setFreq(int freq) {
 		this.freq = freq;
 	}
 	
@@ -53,7 +53,7 @@ public class FreqNode implements Node, Serializable {
 	}
 	
 	public String toString() {
-		String res = "FreqNode "+this.getFreq()+"\n";
+		String res = "FreqNode : "+this.getFreq()+"\n";
 		res += "FilsGauche : "+this.getLeft()+"\n";
 		res += "FilsDroit : "+this.getRight()+"\n";
 		return res;

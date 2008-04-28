@@ -20,22 +20,26 @@ public class TestSerialization {
 
 		Random r = new Random();
 		byte[] tab0 = {1,1,1};
-		arbre.getFrequences().add(new ValueNode(new BitArray(tab0),r.nextInt()));
+		arbre.getFrequences().add(new ValueNode(new BitArray(tab0),r.nextInt(100)));
 		byte[] tab1 = {0,1,0};
-		arbre.getFrequences().add(new ValueNode(new BitArray(tab1),r.nextInt()));
+		arbre.getFrequences().add(new ValueNode(new BitArray(tab1),r.nextInt(100)));
 		byte[] tab2 = {1,0,1};
-		arbre.getFrequences().add(new ValueNode(new BitArray(tab2),r.nextInt()));
+		arbre.getFrequences().add(new ValueNode(new BitArray(tab2),r.nextInt(100)));
 		byte[] tab3 = {1,0,0};
-		arbre.getFrequences().add(new ValueNode(new BitArray(tab3),r.nextInt()));
+		arbre.getFrequences().add(new ValueNode(new BitArray(tab3),r.nextInt(100)));
 
-		arbre.getFrequences().add(new FreqNode(r.nextInt()));
+		arbre.getFrequences().add(new FreqNode(r.nextInt(100)));
 		((FreqNode) arbre.getFrequences().get(arbre.getFrequences().size()-1)).setLeft(new LeafNode(new BitArray(tab0)));
 		((FreqNode) arbre.getFrequences().get(arbre.getFrequences().size()-1)).setRight(new LeafNode(new BitArray(tab1)));
+		
+		System.out.println("Arbre : \n"+arbre);
 		
 		enregistrerArbre(arbre);
 		arbre = chargerArbre();
 		if (arbre != null)
 			System.out.println("arbre chargé !");
+		
+		System.out.println("Arbre : \n"+arbre);
 
 		//on tente une serialization : sauvegarde
 	}

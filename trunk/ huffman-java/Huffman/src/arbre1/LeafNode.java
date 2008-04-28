@@ -32,6 +32,6 @@ public class LeafNode implements Node, Serializable {
 	}
 	
 	public String toString() {
-		return "LeafNode "+this.getValue();
+		return "LeafNode : "+this.getValue()+"\n";
 	}
 }
