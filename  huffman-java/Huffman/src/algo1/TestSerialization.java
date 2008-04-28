@@ -19,7 +19,7 @@ public class TestSerialization {
 		Arbre arbre = new Arbre();
 
 		Random r = new Random();
-		byte[] tab0 = {1,1,1};
+		/*byte[] tab0 = {1,1,1};
 		arbre.getFrequences().add(new ValueNode(new BitArray(tab0),r.nextInt(100)));
 		byte[] tab1 = {0,1,0};
 		arbre.getFrequences().add(new ValueNode(new BitArray(tab1),r.nextInt(100)));
@@ -86,6 +86,6 @@ public class TestSerialization {
 		{
 			System.out.println("Problème de sauvegarde... -- "+e);
 			return 1;
-		}
+		}*/
 	}
 }

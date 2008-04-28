@@ -1,30 +1,25 @@
 package arbre1;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Arbre implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<Node>  frequences;
+	private Node  node;
 	
 	public Arbre() {
-		frequences = new ArrayList<Node>();
 	}
 	
-	public ArrayList<Node> getFrequences() {
-		return frequences;
+	public Node getNode() {
+		return this.node;
 	}
 	
-	public void setFrequences(ArrayList<Node> frequences) {
-		this.frequences = frequences;
+	public void setNode(Node node) {
+		this.node = node;
 	}
 	
-	public String toString() {
-		String res = "";
-		for (Node n : this.getFrequences())
-			res += n;
-		return res;
+	public String toString() {;
+		return this.getNode().toString();
 	}
 }
