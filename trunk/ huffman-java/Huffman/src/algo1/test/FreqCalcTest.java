@@ -5,22 +5,23 @@ import java.util.ArrayList;
 import tri.test.Tri;
 
 import algo1.FreqCalc;
+import arbre1.Node;
 import arbre1.ValueNode;
 
 public class FreqCalcTest {
 	
 	public static void main(String args[]){
-		ArrayList<ValueNode> nodeList = null;
+		ArrayList<Node> nodeList = null;
 		try{
-			nodeList = FreqCalc.getFrequences("C:\\Documents and Settings\\aurelien\\Mes documents\\NetBeansProjects\\CodeHuffman\\src\\algo1\\test\\fichierTest", 8);
+			nodeList = FreqCalc.getFrequences("/home/quentin/Documents/workspace/Huffman/src/algo1/test/fichierTest", 8);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.println("Liste de frequence" );
 		for(int i=0 ; i < nodeList.size();i++){
-			System.out.print("Valeur:" + nodeList.get(i).getValue());
-			System.out.println(" Frequence: " + nodeList.get(i).getFreq());
+			System.out.print("Valeur:" + ((ValueNode)nodeList.get(i)).getValue());
+			System.out.println(" Frequence: " + ((ValueNode)nodeList.get(i)).getFreq());
 		}
 		ValueNode[] valueNodeTab = new ValueNode[nodeList.size()];
 		nodeList.toArray(valueNodeTab);

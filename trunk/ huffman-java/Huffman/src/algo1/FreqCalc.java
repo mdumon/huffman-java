@@ -6,14 +6,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import arbre1.Node;
 import arbre1.ValueNode;
 import bitutils.BitInputStream;
 
 public class FreqCalc{
 	
-	public static ArrayList<ValueNode> getFrequences(String fichier, int dicoSize) throws FileNotFoundException{
+	public static ArrayList<Node> getFrequences(String fichier, int dicoSize) throws FileNotFoundException{
 		
-		ArrayList<ValueNode> valueNodeList = new ArrayList<ValueNode>();
+		ArrayList<Node> valueNodeList = new ArrayList<Node>();
 		FileInputStream fp = new FileInputStream(fichier);
 		BitInputStream bitInputStream = new BitInputStream((InputStream)fp);
 		
@@ -27,7 +28,7 @@ public class FreqCalc{
 			}
 			if(valueNode.getValue().size() == 0) return valueNodeList;
 			if(valueNodeList.contains(valueNode))
-				valueNodeList.get(valueNodeList.indexOf(valueNode)).incFreq();
+				((ValueNode)valueNodeList.get(valueNodeList.indexOf(valueNode))).incFreq();
 			else
 				valueNodeList.add(valueNode);
 		}
