@@ -15,45 +15,68 @@ import org.junit.Test;
 
 import bitutils.ArrayTooShortException;
 import bitutils.BitArray;
+import bitutils.BitArrayBooleanArray;
 
 
-public class TestBitArray {
+public class TestBitArrayBooleanArray {
 	
 	private byte[] testArray= { (byte)0xF0, 0x55 , (byte)0xF0, 0x55 };
 	
+	private BitArray newBitArray(){
+		return new BitArrayBooleanArray();
+	}
+	
+/*	
+    private BitArray newBitArray(byte[] ba){
+		return new BitArrayBooleanArray(ba);
+	}
+*/
+	
+	private BitArray newBitArray(byte[] ba,int nbBits){
+		return new BitArrayBooleanArray(ba,nbBits);
+	}
+	
+	private BitArray newBitArray(byte[] ba,int nbBits,int bitOff){
+		return new BitArrayBooleanArray(ba,nbBits,bitOff);
+	}
+	
+	private BitArray newBitArray(byte[] ba,int nbBits,int bitOff, int byteOff){
+		return new BitArrayBooleanArray(ba,nbBits,bitOff,byteOff);
+	}
+	
 	@Test
 	public void testBitArray() {
-		BitArray b = new BitArray();
+		BitArray b = newBitArray();
 		assertNotNull(b);
 	}
 
 	@Test(expected= ArrayTooShortException.class)
 	public void testBitArrayByteArrayIntException() throws ArrayTooShortException {
-		BitArray b = new BitArray(testArray,500);
+		BitArray b = newBitArray(testArray,500);
 		assertNotNull(b);
 	}
 	
 	@Test
 	public void testBitArrayByteArrayInt() throws ArrayTooShortException {
-		BitArray b = new BitArray(testArray,testArray.length*8);
+		BitArray b = newBitArray(testArray,testArray.length*8);
 		assertArrayEquals(testArray, b.toByteArray());
 	}
 
 	@Test
 	public void testBitArrayByteArrayIntInt() throws ArrayTooShortException {
-		BitArray b = new BitArray(testArray,15,9);
+		BitArray b = newBitArray(testArray,15,9);
 		assertArrayEquals( new byte[]{(byte)0xAB,(byte) 0xE0}, b.toByteArray());
 	}
 	
 	@Test
 	public void testBitArrayByteArrayIntIntInt() throws ArrayTooShortException {
-		BitArray b = new BitArray(testArray,15,1,1);
+		BitArray b = newBitArray(testArray,15,1,1);
 		assertArrayEquals( new byte[]{(byte)0xAB,(byte) 0xE0}, b.toByteArray());
 	}
 	
 	@Test
 	public void testToBooleanArray() throws ArrayTooShortException {
-		BitArray b = new BitArray(testArray,16);
+		BitArray b = newBitArray(testArray,16);
 		assertTrue( Arrays.equals(new boolean[]{ true,  true,  true,  true,
 												false, false, false, false,				   
 												false, true, false,  true,
@@ -62,19 +85,19 @@ public class TestBitArray {
 	
 	@Test
 	public void testToByteArray() throws ArrayTooShortException {
-		BitArray b = new BitArray(testArray,testArray.length*8);
+		BitArray b = newBitArray(testArray,testArray.length*8);
 		assertArrayEquals(testArray, b.toByteArray());
 	}
 	
 	@Test
 	public void testremoveByteArray() throws ArrayTooShortException {
-		BitArray b = new BitArray(testArray,testArray.length*8);
+		BitArray b = newBitArray(testArray,testArray.length*8);
 		assertArrayEquals(testArray, b.removeByteArray());
 	}
 	
 	@Test
 	public void testIterator() {
-		BitArray ba = new BitArray(testArray,16);
+		BitArray ba = newBitArray(testArray,16);
 		boolean[] boolTab = new boolean[]{ true,  true,  true,  true,
 				false, false, false, false,				   
 				false, true, false,  true,
@@ -88,7 +111,7 @@ public class TestBitArray {
 
 	@Test
 	public void testAddBoolean() {
-		BitArray ba = new BitArray();
+		BitArray ba = newBitArray();
 		
 		for(int i = 0; i < 4; i++){
 			ba.add(false);
@@ -100,7 +123,7 @@ public class TestBitArray {
 
 	@Test
 	public void testAddIntBoolean() {
-		BitArray ba = new BitArray();
+		BitArray ba = newBitArray();
 		
 		for(int i = 0; i < 4 ; i++)
 			ba.add(false);
@@ -114,7 +137,7 @@ public class TestBitArray {
 	
 	@Test( expected=ArrayIndexOutOfBoundsException.class)
 	public void testAddIntBooleanException() {
-		BitArray ba = new BitArray();
+		BitArray ba = newBitArray();
 		
 		for(int i = 0; i < 4 ; i++)
 			ba.add(false);
@@ -128,7 +151,7 @@ public class TestBitArray {
 
 	@Test
 	public void testRemove() {
-		BitArray ba = new BitArray(testArray,16);
+		BitArray ba = newBitArray(testArray,16);
 		
 		for(int i = 0; i < 8; i++)
 			ba.remove(1);
@@ -139,7 +162,7 @@ public class TestBitArray {
 
 	@Test
 	public void testSizeClearIsEmpty() {
-		BitArray ba = new BitArray(testArray,16);
+		BitArray ba = newBitArray(testArray,16);
 		
 		assertTrue(ba.size() == 16);
 		ba.clear();
@@ -149,7 +172,7 @@ public class TestBitArray {
 
 	@Test
 	public void testGetSet() {
-		BitArray ba = new BitArray(testArray,16);
+		BitArray ba = newBitArray(testArray,16);
 		
 		assertTrue(ba.get(9));
 		ba.set(9,false);
@@ -158,8 +181,8 @@ public class TestBitArray {
 	
 	@Test
 	public void testEquals() {
-		BitArray ba = new BitArray(testArray,16);
-		BitArray bb = new BitArray(testArray,16);
+		BitArray ba = newBitArray(testArray,16);
+		BitArray bb = newBitArray(testArray,16);
 		
 		assertTrue(ba != bb);
 		assertTrue(ba.equals(bb));

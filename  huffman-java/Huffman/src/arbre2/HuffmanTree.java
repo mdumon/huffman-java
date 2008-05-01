@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import algo2.FreqCode;
-import bitutils.BitArray;
+import bitutils.BitArrayBooleanList;
 
 public class HuffmanTree extends Tree<FreqCode> implements Serializable{
 
@@ -37,16 +37,16 @@ public class HuffmanTree extends Tree<FreqCode> implements Serializable{
 		setRoot(vns.remove(0));
 	
 		/* On rempli le membre EncValue des FreqCodes */
-		parcoursArbre(getRoot(),new BitArray());
+		parcoursArbre(getRoot(),new BitArrayBooleanList());
 		
 		/* et pi là on a finit en fait :p */
 	}
 	
-	private void parcoursArbre(Node<FreqCode> n,BitArray codage){
+	private void parcoursArbre(Node<FreqCode> n,BitArrayBooleanList codage){
 		if(n == null) return; // n'arrive jamais.. (normalement..)
 		
 		if(n.getValue() != null){
-			n.getValue().setEncValue(new BitArray(codage));
+			n.getValue().setEncValue(new BitArrayBooleanList(codage));
 			return;
 		}
 		
