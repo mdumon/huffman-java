@@ -29,7 +29,6 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import algo.FakeHuffmaneur;
 import algo2.HuffmanDecode;
 import algo2.HuffmanEncode;
 

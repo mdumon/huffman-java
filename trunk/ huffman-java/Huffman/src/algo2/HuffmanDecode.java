@@ -5,17 +5,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 import algo.Huffmaneur;
-import arbre2.Node;
 import arbre2.HuffmanTree;
+import arbre2.Node;
 import bitutils.BitArray;
+import bitutils.BitArrayBooleanArray;
 import bitutils.BitInputStream;
 import bitutils.BitOutputStream;
 
@@ -52,21 +49,21 @@ public class HuffmanDecode extends Huffmaneur {
 			bos = new BitOutputStream(new FileOutputStream(getOutputFile()));
 		} catch (FileNotFoundException ignore) { return; }
 
-		/* On crée un arbre d'huffman */
+		/* On crï¿½e un arbre d'huffman */
 		HuffmanTree ht = new HuffmanTree();
 
-		ba = new BitArray();
+		ba = new BitArrayBooleanArray();
 
 		try {
 			ht = (HuffmanTree) new ObjectInputStream(bis).readObject();
 		} catch (ClassNotFoundException ignore) {}
 		catch (IOException ignore2){}
 
-		System.out.println("Début du décodage\n");
+		System.out.println("Dï¿½but du dï¿½codage\n");
 
 		decArbre(ba, ht.getRoot(), bis, bos);
 
-		System.out.println("Décodage terminé\n");
+		System.out.println("Dï¿½codage terminï¿½\n");
 
 		try{
 			bis.close();
@@ -81,9 +78,9 @@ public class HuffmanDecode extends Huffmaneur {
 
 		if(node.getValue() != null){
 			try {
-				System.out.println("Valeur trouvée : " + node.getValue().getKey());
-				System.out.println("Valeur encodée lue dans le fichier : " + ba);
-				System.out.println("Caractère à écrire : " + node.getValue().getKey().toByteArray()[0]);
+				System.out.println("Valeur trouvï¿½e : " + node.getValue().getKey());
+				System.out.println("Valeur encodï¿½e lue dans le fichier : " + ba);
+				System.out.println("Caractï¿½re ï¿½ ï¿½crire : " + node.getValue().getKey().toByteArray()[0]);
 				bos.writeBits(node.getValue().getKey());
 				ba.clear();
 			}catch (IOException ignore4){}

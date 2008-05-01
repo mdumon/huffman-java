@@ -10,7 +10,7 @@ import java.io.InputStream;
  * 
  * @author Franck Séhédic
  * @version 1.0, 18/04/08
- * @see BitArrayBooleanList
+ * @see BitArray
  */
 public class BitInputStream extends FilterInputStream{
 	/* Index permettant de travailler en little ou big endian sur les bytes, 7 == big endian == lecture de gauche à droite */
@@ -51,7 +51,7 @@ public class BitInputStream extends FilterInputStream{
 		
 		byteBuf = buf[1];
 
-		return new BitArrayBooleanList(buf,8,bbIndex).toByteArray()[0];
+		return new BitArrayBooleanArray(buf,8,bbIndex).toByteArray()[0];
 	}
 
 	/**
@@ -90,8 +90,8 @@ public class BitInputStream extends FilterInputStream{
 	 * @return next nbBits bits of data as a BitArray.
 	 * @throws IOException Thrown if something wrong happen when reading the stream.
 	 */
-	public synchronized BitArrayBooleanList readBits(int nbBits) throws IOException{
-		BitArrayBooleanList ba = new BitArrayBooleanList();
+	public synchronized BitArray readBits(int nbBits) throws IOException{
+		BitArray ba = new BitArrayBooleanArray();
 		byte b;
 		
 		while(nbBits-- > 0){

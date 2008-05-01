@@ -176,8 +176,8 @@ public class BitArrayBooleanArray implements BitArray, Serializable{
 	
 	@Override
 	public boolean equals(Object ba){
-		if(!(ba instanceof BitArrayBooleanArray)) return false;
-		BitArrayBooleanArray b = (BitArrayBooleanArray)ba;
+		if(!(ba instanceof BitArray)) return false;
+		BitArray b = (BitArray)ba;
 		
 		if(b.size() != size()) return false;
 		
