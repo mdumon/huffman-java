@@ -66,7 +66,7 @@ public class HuffmanEncode extends Huffmaneur {
 		try {
 			while(true){
 				ba = bis.readBits(dicoSize);
-				/* System.out.println("lu : " + ba + "\nsize : " + ba.size()); */
+
 				if(ba.size() != getDicoSize()) break;
 				
 				found = false;

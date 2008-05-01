@@ -9,6 +9,12 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -16,6 +22,8 @@ import org.junit.Test;
 import bitutils.ArrayTooShortException;
 import bitutils.BitArray;
 import bitutils.BitArrayBooleanArray;
+
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 
 public class TestBitArrayBooleanArray {
@@ -185,6 +193,35 @@ public class TestBitArrayBooleanArray {
 		BitArray bb = newBitArray(testArray,16);
 		
 		assertTrue(ba != bb);
+		assertTrue(ba.equals(bb));
+	}
+	
+	@Test
+	public void testSerialisation() {
+		BitArray ba = newBitArray(testArray,18);
+		BitArray bb = newBitArray(testArray,18);
+		
+		ByteOutputStream bos = new ByteOutputStream();
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream((OutputStream)bos);
+			oos.writeObject(ba);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		ba = null;
+		
+		ByteArrayInputStream bais = new ByteArrayInputStream(bos.getBytes());
+		
+		try {
+			ObjectInputStream ois = new ObjectInputStream((InputStream)bais);
+			ba = (BitArray)ois.readObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		assertTrue(ba.equals(bb));
 	}
 }
