@@ -1,5 +1,7 @@
 package algo2;
 
+import groupe2.TimedLog;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -8,9 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 import algo.Huffmaneur;
 import arbre2.HuffmanTree;
@@ -50,39 +50,53 @@ public class HuffmanEncode extends Huffmaneur {
 	protected void huffmaner() {
 		BitInputStream bis;
 		BitOutputStream bos;
-		List<FreqCode> list;
+		FreqCode[] list;
+		int nbFreqCode;
+		int nbElements;
 		BitArray ba;
 		int dicoSize = getDicoSize();
+		TimedLog tl = new TimedLog();
+		
+		tl.start();
+		
 		
 		/* On ouvre l'inputFile */
 		try {
 			bis = new BitInputStream(new BufferedInputStream(new FileInputStream(getInputFile())));
 		} catch (FileNotFoundException ignore) { return; }
 		
-		System.out.println("Création du tableau de fréquence, dico : " + getDicoSize());
+		tl.log("Création du tableau de fréquence, dico : " + getDicoSize());
+		
 		/* On créer un tableau de fréquence basé sur l'inputFile */
-		list = new ArrayList<FreqCode>();
+		list = new FreqCode[(int)Math.pow(2.0, getDicoSize())];
+		nbFreqCode = 0;
+		nbElements = 0;
 		boolean found;
+		FreqCode fc;
+		int i;
 		try {
 			while(true){
 				ba = bis.readBits(dicoSize);
 
 				if(ba.size() != getDicoSize()) break;
 				
-				found = false;
-				for(FreqCode fc: list){
+				for(i = 0; i < nbFreqCode; i++){
+					fc = list[i];
 					if(ba.equals(fc.getKey())){
 						fc.incFreq();
-						found = true;
 						break;
 					}	
 				}
-				if(!found)
-					list.add(new FreqCode(ba,1));
+				if(i >= nbFreqCode)
+					list[nbFreqCode++] = new FreqCode(ba,1);
+				
+				nbElements++;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		tl.log("fin de la lecture du fichier");
 		
 		/* On ferme l'inputFile */
 		try {
@@ -92,22 +106,20 @@ public class HuffmanEncode extends Huffmaneur {
 		}
 		
 		
-		System.out.println("Tri du tableau de fréquence");
-		/* On tri notre tableau de fréquence */
-		Collections.sort(list);
-		FreqCode[] fca = list.toArray(new FreqCode[0]);
+		tl.log("Tri du tableau de fréquence");
+		/* On tri (ordre décroissant) notre tableau de fréquence */
+		Arrays.sort(list);
 		
-		System.out.println("Construction de l'huffman tree");
+		tl.log("Construction de l'huffman tree");
 		/* On construit notre arbre d'huffman */
 		HuffmanTree ht = new HuffmanTree();
 		
 		/* On obtient dans notre tableau de FreqCode l'encodage des elements */
-		ht.Build(fca);
-		
+		ht.Build(list);
 		
 		int tota = 0;
 		int totb = 0;
-		System.out.println("Sérialisation de l'arbre");
+		tl.log("Sérialisation de l'arbre");
 		/* On ouvre l'outputFile */
 		try {
 			bos = new BitOutputStream(new FileOutputStream(getOutputFile()));
@@ -115,7 +127,11 @@ public class HuffmanEncode extends Huffmaneur {
 		
 		/* On sérialise l'arbre au début du fichier */
 		try {
-			new ObjectOutputStream(bos).writeObject(ht);
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+			oos.writeObject(ht);
+			
+			/* On sérialise le nombre de feuilles */
+			oos.writeInt(nbElements);
 		} catch (IOException e) {}
 		
 		try {
@@ -123,10 +139,12 @@ public class HuffmanEncode extends Huffmaneur {
 			new ObjectOutputStream(baos).writeObject(ht);
 			tota += baos.toByteArray().length;
 		} catch (IOException e) {}
-		System.out.println("Arbre lenght => " + tota);
+		tl.log("Arbre lenght => " + tota);
 		
 		
-		System.out.println("Encodage de l'inputStream");
+		
+		
+		tl.log("Encodage de l'inputStream");
 		/* On réouvre notre inputStream */
 		try {
 			bis = new BitInputStream(new BufferedInputStream(new FileInputStream(getInputFile())));
@@ -141,7 +159,8 @@ public class HuffmanEncode extends Huffmaneur {
 				if(ba.size() != getDicoSize()) break;
 				
 				found = false;
-				for(FreqCode fc: list){
+				for(i = 0; i < nbFreqCode; i++){
+					fc = list[i];
 					if(ba.equals(fc.getKey())){
 						//System.out.println("Ecriture du bit " + i++ + "[" + ba + "] => [" + fc.getEncValue() + "]" );
 						tota += fc.getEncValue().size();
@@ -152,14 +171,14 @@ public class HuffmanEncode extends Huffmaneur {
 					}
 				}
 				if(!found){
-					System.out.println("Erreur encodage inconnu pour ce BitArray");
+					tl.log("Erreur encodage inconnu pour ce BitArray");
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Avant : " + totb);
-		System.out.println("Après : " + tota);
+		tl.log("Avant : " + totb);
+		tl.log("Après : " + tota);
 		
 		
 		/* On ferme les différentes streams */

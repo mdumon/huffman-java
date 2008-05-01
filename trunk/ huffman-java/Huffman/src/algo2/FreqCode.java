@@ -66,6 +66,6 @@ public class FreqCode implements Comparable<FreqCode>,Serializable {
 	 */
 	@Override
 	public int compareTo(FreqCode l) {
-		return this.getFreq() - l.getFreq();
+		return l.getFreq() - this.getFreq();
 	}
 }
