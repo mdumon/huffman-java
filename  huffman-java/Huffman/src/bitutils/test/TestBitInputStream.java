@@ -10,7 +10,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import bitutils.BitArrayBooleanList;
+import bitutils.BitArray;
+import bitutils.BitArrayBooleanArray;
 import bitutils.BitInputStream;
 
 
@@ -60,7 +61,7 @@ public class TestBitInputStream {
 	@Test
 	public void testMarkReset() {
 		BitInputStream bis;
-		BitArrayBooleanList ba;
+		BitArray ba;
 		
 		try{
 			bis = new BitInputStream(new BufferedInputStream(new FileInputStream("src/BitUtils/Test/testFile")));
@@ -111,7 +112,7 @@ public class TestBitInputStream {
 	@Test
 	public void testReadBits() {
 		BitInputStream bis;
-		BitArrayBooleanList ba = new BitArrayBooleanList();
+		BitArray ba = new BitArrayBooleanArray();
 		
 		try{
 			bis = new BitInputStream(new FileInputStream("src/BitUtils/Test/testFile"));

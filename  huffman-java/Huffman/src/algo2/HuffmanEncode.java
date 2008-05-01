@@ -13,7 +13,7 @@ import java.util.List;
 
 import algo.Huffmaneur;
 import arbre2.HuffmanTree;
-import bitutils.BitArrayBooleanList;
+import bitutils.BitArray;
 import bitutils.BitInputStream;
 import bitutils.BitOutputStream;
 
@@ -50,7 +50,7 @@ public class HuffmanEncode extends Huffmaneur {
 		BitInputStream bis;
 		BitOutputStream bos;
 		List<FreqCode> list;
-		BitArrayBooleanList ba;
+		BitArray ba;
 		int dicoSize = getDicoSize();
 		
 		/* On ouvre l'inputFile */
