@@ -1,5 +1,7 @@
 package algo2;
 
+import groupe2.TimedLog;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +13,6 @@ import java.io.ObjectInputStream;
 import algo.Huffmaneur;
 import arbre2.HuffmanTree;
 import arbre2.Node;
-import bitutils.BitArray;
 import bitutils.BitArrayBooleanArray;
 import bitutils.BitInputStream;
 import bitutils.BitOutputStream;
@@ -38,32 +39,45 @@ public class HuffmanDecode extends Huffmaneur {
 		BitInputStream bis;
 		BitOutputStream bos;
 		BitArrayBooleanArray ba;
+		int nbElements = 0;
+		
+		/* On lance le logger */
+		TimedLog tl = new TimedLog();
+		tl.start();
 
 		/* On ouvre l'inputFile */
+		tl.log("On ouvre l'inputFile");
 		try {
 			bis = new BitInputStream(new BufferedInputStream(new FileInputStream(getInputFile())));
 		} catch (FileNotFoundException ignore) { return; }
 
 		/* On ouvre l'outuptFile */
+		tl.log("On ouvre l'outuptFile");
 		try {
 			bos = new BitOutputStream(new FileOutputStream(getOutputFile()));
 		} catch (FileNotFoundException ignore) { return; }
 
 		/* On crï¿½e un arbre d'huffman */
+		tl.log("On crÃ©e un arbre d'huffman");
 		ba = new BitArrayBooleanArray();
-
-		HuffmanTree ht = new HuffmanTree();
-
+		HuffmanTree ht = null;
 		try {
-			ht = (HuffmanTree) new ObjectInputStream(bis).readObject();
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			ht = (HuffmanTree) ois.readObject();
+			nbElements = ois.readInt();
 		} catch (ClassNotFoundException ignore) {}
 		catch (IOException ignore2){}
 
-		System.out.println("Dï¿½but du dï¿½codage\n");
+		/* On lance le dÃ©codage */
+		tl.log("Dï¿½but du dï¿½codage\n");
+		
+		int retval;
+		for(int i = 0; i < nbElements ; i++){
+			retval = decArbre(ba, ht.getRoot(), bis, bos);
+			if(retval == -1) break; /* fin du fichier, on sort */
+		}
 
-		while(decArbre(ba, ht.getRoot(), bis, bos) != -1);
-
-		System.out.println("Dï¿½codage terminï¿½\n");
+		tl.log("Dï¿½codage terminï¿½\n");
 
 		try{
 			bis.close();
@@ -81,9 +95,9 @@ public class HuffmanDecode extends Huffmaneur {
 
 		if(node.getValue() != null){
 			try {
-				System.out.println("Valeur trouvée : " + node.getValue().getKey());
-				System.out.println("Valeur encodée lue dans le fichier : " + ba);
-				System.out.println("Caractère à écrire : " + node.getValue().getKey().toByteArray()[0]);
+				System.out.println("Valeur trouvï¿½e : " + node.getValue().getKey());
+				System.out.println("Valeur encodï¿½e lue dans le fichier : " + ba);
+				System.out.println("Caractï¿½re ï¿½ ï¿½crire : " + node.getValue().getKey().toByteArray()[0]);
 				bos.writeBits(node.getValue().getKey());
 				ba.clear();
 			}catch (IOException ignore4){}

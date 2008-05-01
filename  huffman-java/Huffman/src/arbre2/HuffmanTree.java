@@ -14,8 +14,9 @@ public class HuffmanTree extends Tree<FreqCode> implements Serializable{
 	public void Build(FreqCode[] fcs){
 		List<ValuedNode> vns = new ArrayList<ValuedNode>();
 		
+		/* On créer notre tableau mais dans le sens inverse, du moins fréquent au plus fréquent */
 		for(FreqCode fc : fcs)
-			vns.add(new ValuedNode(fc));
+			vns.add(0,new ValuedNode(fc));
 		
 		/* Création de l'arbre */
 		ValuedNode vn0,vn1,vn2;
