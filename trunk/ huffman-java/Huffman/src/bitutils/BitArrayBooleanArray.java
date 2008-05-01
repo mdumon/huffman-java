@@ -11,11 +11,14 @@
  * @version 0.0.1 - 19/04/08
  */
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class BitArrayBooleanArray implements BitArray, Serializable{
+public class BitArrayBooleanArray implements BitArray, Externalizable{
 	private static final long serialVersionUID = 1L;
 	
 	/* liste utilisée pour stocker en interne les bits */ 
@@ -301,4 +304,24 @@ public class BitArrayBooleanArray implements BitArray, Serializable{
 			s += (b)?"1":"0";
 		return s;
 	}
+	
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeByte(size());
+		if(size() == 0) return;
+		
+		byte[] tb = toByteArray();
+		for(int i = 0; i < tb.length; i++)
+			out.writeByte(tb[i]);
+	}
+	
+
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		this.size = in.readByte();
+		if(size() == 0) return;
+		
+		// TODO : fin de la déserialisation (lecture du byte[])
+		return;
+	}
+
+
 }

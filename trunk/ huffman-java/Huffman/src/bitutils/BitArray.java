@@ -1,8 +1,9 @@
 package bitutils;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
-public interface BitArray extends Iterable<Boolean>{
+public interface BitArray extends Iterable<Boolean>, Serializable{
 	
  	public boolean[] toBooleanArray();
  	

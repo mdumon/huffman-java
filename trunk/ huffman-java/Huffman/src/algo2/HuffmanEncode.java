@@ -1,6 +1,7 @@
 package algo2;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -117,13 +118,13 @@ public class HuffmanEncode extends Huffmaneur {
 			new ObjectOutputStream(bos).writeObject(ht);
 		} catch (IOException e) {}
 		
-		/*try {
+		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			new ObjectOutputStream(baos).writeObject(ht);
 			tota += baos.toByteArray().length;
 		} catch (IOException e) {}
 		System.out.println("Arbre lenght => " + tota);
-		*/
+		
 		
 		System.out.println("Encodage de l'inputStream");
 		/* On réouvre notre inputStream */
