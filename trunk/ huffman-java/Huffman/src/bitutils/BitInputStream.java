@@ -181,16 +181,3 @@ public class BitInputStream extends FilterInputStream{
 		return this.available() + 8 - bbIndex;
 	}
 }
-
-/*
-BitInputStream file;
-file = new BitOutputStream(new FileOuputStream("monfichier"));
-
-ByteArray b;
-file.readBit(b,9);
-file.readBit(b,9);
-
-
-file.writeBits(b);
-file.writeBits(b);
-*/
