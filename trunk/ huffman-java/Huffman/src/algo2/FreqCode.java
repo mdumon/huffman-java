@@ -66,6 +66,8 @@ public class FreqCode implements Comparable<FreqCode>,Serializable {
 	 */
 	@Override
 	public int compareTo(FreqCode l) {
+		if(l == null)
+			System.out.println("l est null");
 		return l.getFreq() - this.getFreq();
 	}
 }
