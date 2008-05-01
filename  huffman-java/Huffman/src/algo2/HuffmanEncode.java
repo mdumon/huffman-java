@@ -68,7 +68,7 @@ public class HuffmanEncode extends Huffmaneur {
 		tl.log("Création du tableau de fréquence, dico : " + getDicoSize());
 		
 		/* On créer un tableau de fréquence basé sur l'inputFile */
-		list = new FreqCode[(int)Math.pow(2.0, getDicoSize())];
+		list = new FreqCode[(int)Math.pow(2.0, dicoSize)];
 		nbFreqCode = 0;
 		nbElements = 0;
 		boolean found;
@@ -77,8 +77,9 @@ public class HuffmanEncode extends Huffmaneur {
 		try {
 			while(true){
 				ba = bis.readBits(dicoSize);
-
-				if(ba.size() != getDicoSize()) break;
+				
+				if(ba.size() != dicoSize) break;
+				nbElements++;
 				
 				for(i = 0; i < nbFreqCode; i++){
 					fc = list[i];
@@ -89,14 +90,12 @@ public class HuffmanEncode extends Huffmaneur {
 				}
 				if(i >= nbFreqCode)
 					list[nbFreqCode++] = new FreqCode(ba,1);
-				
-				nbElements++;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		tl.log("fin de la lecture du fichier");
+		tl.log("fin de la lecture du fichier (nbElements : " + nbElements +")");
 		
 		/* On ferme l'inputFile */
 		try {
@@ -107,6 +106,9 @@ public class HuffmanEncode extends Huffmaneur {
 		
 		
 		tl.log("Tri du tableau de fréquence");
+		
+		list = Arrays.copyOf(list, nbFreqCode);
+		
 		/* On tri (ordre décroissant) notre tableau de fréquence */
 		Arrays.sort(list);
 		
@@ -155,8 +157,8 @@ public class HuffmanEncode extends Huffmaneur {
 		/* On encode à la volée notre inputStream */
 		try {
 			while(true){
-				ba = bis.readBits(getDicoSize());
-				if(ba.size() != getDicoSize()) break;
+				ba = bis.readBits(dicoSize);
+				if(ba.size() != dicoSize) break;
 				
 				found = false;
 				for(i = 0; i < nbFreqCode; i++){

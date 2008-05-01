@@ -69,7 +69,7 @@ public class HuffmanDecode extends Huffmaneur {
 		catch (IOException ignore2){}
 
 		/* On lance le décodage */
-		tl.log("D�but du d�codage\n");
+		tl.log("D�but du d�codage (nbElements : " + nbElements + ")");
 		
 		int retval;
 		for(int i = 0; i < nbElements ; i++){
