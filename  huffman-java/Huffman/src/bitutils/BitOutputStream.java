@@ -6,7 +6,7 @@ import java.io.OutputStream;
 
 public class BitOutputStream extends FilterOutputStream{
 
-	private BitArray buffer;
+	private BitArray buffer = new BitArrayBooleanArray();
 
 	public BitOutputStream(OutputStream out){
 		super(out);
@@ -23,20 +23,25 @@ public class BitOutputStream extends FilterOutputStream{
 
 		if((len + off) > b.size()) throw new ArrayTooShortException();
 
-		buffer = new BitArrayBooleanArray();
-
 		for(int i = off; i < (off + len); i++)
 			buffer.add(b.get(i));
-
-		write(buffer.removeWritableByteArray());
+		if(!buffer.isEmpty())
+			write(buffer.removeWritableByteArray());
 	}
 
 
 	@Override
 	public void flush() throws IOException{
-		if(buffer != null)
-			this.write(buffer.removeByteArray());
+		if(!buffer.isEmpty())
+			this.write(buffer.removeByteArray2());
 
 		super.flush();
+	}
+	
+	public void close() throws IOException{
+		if(!buffer.isEmpty())
+			this.flush();
+		
+		super.close();
 	}
 }

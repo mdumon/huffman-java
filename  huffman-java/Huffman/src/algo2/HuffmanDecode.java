@@ -37,7 +37,7 @@ public class HuffmanDecode extends Huffmaneur {
 	protected void huffmaner() {
 		BitInputStream bis;
 		BitOutputStream bos;
-		BitArray ba;
+		BitArrayBooleanArray ba;
 
 		/* On ouvre l'inputFile */
 		try {
@@ -61,7 +61,7 @@ public class HuffmanDecode extends Huffmaneur {
 
 		System.out.println("D�but du d�codage\n");
 
-		decArbre(ba, ht.getRoot(), bis, bos);
+		while(decArbre(ba, ht.getRoot(), bis, bos) == 0);
 
 		System.out.println("D�codage termin�\n");
 
@@ -74,7 +74,9 @@ public class HuffmanDecode extends Huffmaneur {
 		}catch(IOException eg){}
 	}
 
-	private void decArbre (BitArray ba, Node<FreqCode> node, BitInputStream bis, BitOutputStream bos) {
+	private int decArbre (BitArrayBooleanArray ba, Node<FreqCode> node, BitInputStream bis, BitOutputStream bos) {
+
+		int sortie = 0;
 
 		if(node.getValue() != null){
 			try {
@@ -86,25 +88,25 @@ public class HuffmanDecode extends Huffmaneur {
 			}catch (IOException ignore4){}
 		}
 		else{
-			
+
 			try {
 				ba.add(bis.readBits(1).get(0));
 			}catch (ArrayIndexOutOfBoundsException i){
-				try{
-					bos.flush();
-					System.out.println("fin\n");
-				}catch(IOException g){}
 			}catch (IOException t){}
 
 			System.out.println("lu : " + ba + "\nsize : " + ba.size());
-			
-			if(ba.get(ba.size() - 1) == false){
-				decArbre(ba, node.getRightSon(), bis, bos);
-			}
+			try{
+				if(ba.get(ba.size() - 1) == true){
+					return decArbre(ba, node.getRightSon(), bis, bos);
+				}
 
-			else{
-				decArbre(ba, node.getLeftSon(), bis, bos);
+				else{
+					return decArbre(ba, node.getLeftSon(), bis, bos);
+				}
+			}catch (ArrayIndexOutOfBoundsException k){
+				sortie = -1;
 			}
 		}
+		return sortie;
 	}
 }

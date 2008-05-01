@@ -157,6 +157,20 @@ public class BitArrayBooleanList implements BitArray{
 		return tb;
 	}
 	
+	public byte removeByteArray2(){
+		if(size() == 0) return 0;
+		
+		byte tb = 0;
+		int bit;
+		
+		for(int i = 0; size() > 0; i++){
+			bit = (remove(0)?1:0);
+			tb |= (bit << (endianShift - (i%8)));
+		}
+		
+		return tb;
+	}
+	
 	@Override
 	public boolean equals(Object ba){
 		if(!(ba instanceof BitArray)) return false;
