@@ -50,9 +50,9 @@ public class HuffmanDecode extends Huffmaneur {
 		} catch (FileNotFoundException ignore) { return; }
 
 		/* On crï¿½e un arbre d'huffman */
-		HuffmanTree ht = new HuffmanTree();
-
 		ba = new BitArrayBooleanArray();
+
+		HuffmanTree ht = new HuffmanTree();
 
 		try {
 			ht = (HuffmanTree) new ObjectInputStream(bis).readObject();
@@ -61,7 +61,7 @@ public class HuffmanDecode extends Huffmaneur {
 
 		System.out.println("Dï¿½but du dï¿½codage\n");
 
-		while(decArbre(ba, ht.getRoot(), bis, bos) == 0);
+		while(decArbre(ba, ht.getRoot(), bis, bos) != -1);
 
 		System.out.println("Dï¿½codage terminï¿½\n");
 
@@ -76,13 +76,14 @@ public class HuffmanDecode extends Huffmaneur {
 
 	private int decArbre (BitArrayBooleanArray ba, Node<FreqCode> node, BitInputStream bis, BitOutputStream bos) {
 
-		int sortie = 0;
+		byte bitlu = 0;
+		boolean b = false;
 
 		if(node.getValue() != null){
 			try {
-				System.out.println("Valeur trouvï¿½e : " + node.getValue().getKey());
-				System.out.println("Valeur encodï¿½e lue dans le fichier : " + ba);
-				System.out.println("Caractï¿½re ï¿½ ï¿½crire : " + node.getValue().getKey().toByteArray()[0]);
+				System.out.println("Valeur trouvée : " + node.getValue().getKey());
+				System.out.println("Valeur encodée lue dans le fichier : " + ba);
+				System.out.println("Caractère à écrire : " + node.getValue().getKey().toByteArray()[0]);
 				bos.writeBits(node.getValue().getKey());
 				ba.clear();
 			}catch (IOException ignore4){}
@@ -90,23 +91,21 @@ public class HuffmanDecode extends Huffmaneur {
 		else{
 
 			try {
-				ba.add(bis.readBits(1).get(0));
+				bitlu = bis.readBit();
+				if(bitlu == -1) return bitlu;
+
+				b = (bitlu == 1);
+
+				ba.add(b);
 			}catch (ArrayIndexOutOfBoundsException i){
 			}catch (IOException t){}
 
 			System.out.println("lu : " + ba + "\nsize : " + ba.size());
-			try{
-				if(ba.get(ba.size() - 1) == true){
-					return decArbre(ba, node.getRightSon(), bis, bos);
-				}
 
-				else{
-					return decArbre(ba, node.getLeftSon(), bis, bos);
-				}
-			}catch (ArrayIndexOutOfBoundsException k){
-				sortie = -1;
-			}
+			try{
+				return decArbre(ba, (b)?node.getRightSon():node.getLeftSon() , bis, bos);
+			}catch(ArrayIndexOutOfBoundsException m){}
 		}
-		return sortie;
+		return 0;
 	}
 }
