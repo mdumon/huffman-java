@@ -13,6 +13,8 @@ public interface BitArray extends Iterable<Boolean>, Serializable{
  	
  	public byte[] removeByteArray();
  	
+ 	public byte removeByteArray2();
+ 	
  	public boolean equals(Object ba);
  	
  	public int size();
