@@ -11,13 +11,12 @@
  * @version 0.0.1 - 19/04/08
  */
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-public class BitArrayBooleanList implements BitArray, Serializable{
+public class BitArrayBooleanList implements BitArray{
 	private static final long serialVersionUID = 1L;
 	
 	/* liste utilisée pour stocker en interne les bits */ 
