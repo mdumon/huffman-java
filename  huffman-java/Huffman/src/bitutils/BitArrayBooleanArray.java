@@ -13,6 +13,7 @@
 
 import java.io.Externalizable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Arrays;
@@ -319,9 +320,8 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 		this.size = in.readByte();
 		if(size() == 0) return;
 		
-		// TODO : fin de la déserialisation (lecture du byte[])
+		BitInputStream bis = new BitInputStream((InputStream)in);
+		this.boolArray = bis.readBits(size()).toBooleanArray();
 		return;
 	}
-
-
 }
