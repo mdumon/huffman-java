@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-public class BitArray implements Iterable<Boolean>, Serializable{
+public class BitArrayBooleanList implements BitArray, Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	/* liste utilisée pour stocker en interne les bits */ 
@@ -32,7 +32,7 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 	/**
 	 * Build an empty BitArray
 	 */
-	public BitArray(){
+	public BitArrayBooleanList(){
 		bList = new Vector<Boolean>(8,8);
 	}
 	
@@ -41,7 +41,7 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 	 * @param tb Byte Array from which bits will be read
 	 * @throws ArrayTooShortException Thrown when tb contain less bits than nbBits
 	 */
-	public BitArray(byte[] b){
+	public BitArrayBooleanList(byte[] b){
 		this(b,b.length*8);
 	}
 	
@@ -51,7 +51,7 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 	 * @param nbBits Number of bits to be read
 	 * @throws ArrayTooShortException Thrown when tb contain less bits than nbBits
 	 */
-	public BitArray(byte[] b,int nbBits) throws ArrayTooShortException{
+	public BitArrayBooleanList(byte[] b,int nbBits) throws ArrayTooShortException{
 		this(b,nbBits,0);
 	}
 	
@@ -62,7 +62,7 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 	 * @param bitOff bit offset from which we'll start reading
 	 * @throws ArrayTooShortException Thrown when tb contain less bits than nbBits+bitOff
 	 */
-	public BitArray(byte[] tb,int nbBits,int bitOff) throws ArrayTooShortException{
+	public BitArrayBooleanList(byte[] tb,int nbBits,int bitOff) throws ArrayTooShortException{
 		this(tb,nbBits,bitOff,0);
 	}
 	
@@ -74,7 +74,7 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 	 * @param byteOff byte offset from which we'll start reading (reading will start at bit byteOff*8+bitOff)
 	 * @throws ArrayTooShortException Thrown when tb contain less bits than nbBits+bitOff+byteOff*8
 	 */
-	public BitArray(byte[] tb,int nbBits,int bitOff,int byteOff) throws ArrayTooShortException{
+	public BitArrayBooleanList(byte[] tb,int nbBits,int bitOff,int byteOff) throws ArrayTooShortException{
 		this();
 		
 		if(tb.length*8 < (nbBits+bitOff)) throw new ArrayTooShortException();
@@ -88,15 +88,15 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 		}
 	}
 	
-	public BitArray(BitArray ba){
+	public BitArrayBooleanList(BitArrayBooleanList ba){
 		this();
 		
 		for(boolean b : ba)
 			add(b);
 	}
 	
-	public Endianness getBitEndianness(){
-		return (endianShift == 0)?Endianness.LITTLE_ENDIAN:Endianness.BIG_ENDIAN;
+	public BitArray.Endianness getBitEndianness(){
+		return (endianShift == 0)?BitArray.Endianness.LITTLE_ENDIAN:BitArray.Endianness.BIG_ENDIAN;
 	}
 
 	public boolean[] toBooleanArray(){
@@ -160,8 +160,8 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 	
 	@Override
 	public boolean equals(Object ba){
-		if(!(ba instanceof BitArray)) return false;
-		BitArray b = (BitArray)ba;
+		if(!(ba instanceof BitArrayBooleanList)) return false;
+		BitArrayBooleanList b = (BitArrayBooleanList)ba;
 		
 		if(b.size() != size()) return false;
 		
@@ -176,12 +176,12 @@ public class BitArray implements Iterable<Boolean>, Serializable{
 		return bList.listIterator();
 	}
 	
-	public BitArray add(boolean b){
+	public BitArrayBooleanList add(boolean b){
 		bList.add(b);
 		return this;
 	}
 	
-	public BitArray add(int index,boolean b){
+	public BitArrayBooleanList add(int index,boolean b){
 		bList.add(index,b);
 		return this;
 	}

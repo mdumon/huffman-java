@@ -11,7 +11,7 @@ import java.io.IOException;
  * on an inputFile and save it to an outputFile.
  * @author Franck Séhédic <sehedic@ecole.ensicaen.fr>
  */
-public abstract class Huffmaneur extends Thread{
+public abstract class Huffmaneur extends Thread implements Advanceable{
 	PropertyChangeSupport pcs;
 	
 	public Huffmaneur(){
@@ -60,13 +60,13 @@ public abstract class Huffmaneur extends Thread{
 	}
 	
 	private int advance = 0;
-	protected synchronized void setAdvance(int advance){
+	public synchronized void setAdvance(int advance){
 		if(this.advance != advance){
 			pcs.firePropertyChange("advance",this.advance,advance);
 			this.advance = advance;
 		}
 	}
-	protected void incAdvance(){
+	public void incAdvance(){
 		setAdvance(advance + 1);
 	}
 	public synchronized int getAdvance(){

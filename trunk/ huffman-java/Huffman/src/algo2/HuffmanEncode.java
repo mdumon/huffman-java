@@ -1,7 +1,6 @@
 package algo2;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,7 +13,7 @@ import java.util.List;
 
 import algo.Huffmaneur;
 import arbre2.HuffmanTree;
-import bitutils.BitArray;
+import bitutils.BitArrayBooleanList;
 import bitutils.BitInputStream;
 import bitutils.BitOutputStream;
 
@@ -51,7 +50,8 @@ public class HuffmanEncode extends Huffmaneur {
 		BitInputStream bis;
 		BitOutputStream bos;
 		List<FreqCode> list;
-		BitArray ba;
+		BitArrayBooleanList ba;
+		int dicoSize = getDicoSize();
 		
 		/* On ouvre l'inputFile */
 		try {
@@ -64,8 +64,8 @@ public class HuffmanEncode extends Huffmaneur {
 		boolean found;
 		try {
 			while(true){
-				ba = bis.readBits(getDicoSize());
-				System.out.println("lu : " + ba + "\nsize : " + ba.size());
+				ba = bis.readBits(dicoSize);
+				/* System.out.println("lu : " + ba + "\nsize : " + ba.size()); */
 				if(ba.size() != getDicoSize()) break;
 				
 				found = false;
@@ -89,6 +89,7 @@ public class HuffmanEncode extends Huffmaneur {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		
 		
 		System.out.println("Tri du tableau de fréquence");
 		/* On tri notre tableau de fréquence */
@@ -116,12 +117,13 @@ public class HuffmanEncode extends Huffmaneur {
 			new ObjectOutputStream(bos).writeObject(ht);
 		} catch (IOException e) {}
 		
-		try {
+		/*try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			new ObjectOutputStream(baos).writeObject(ht);
 			tota += baos.toByteArray().length;
 		} catch (IOException e) {}
 		System.out.println("Arbre lenght => " + tota);
+		*/
 		
 		System.out.println("Encodage de l'inputStream");
 		/* On réouvre notre inputStream */

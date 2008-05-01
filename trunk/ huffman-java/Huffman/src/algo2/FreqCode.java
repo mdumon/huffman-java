@@ -2,7 +2,7 @@ package algo2;
 
 import java.io.Serializable;
 
-import bitutils.BitArray;
+import bitutils.BitArrayBooleanList;
 
 /**
  * A <code>FreqCode</code> is used to store a key,
@@ -20,15 +20,15 @@ public class FreqCode implements Comparable<FreqCode>,Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/* la clef représentée par cette feuille */
-	private BitArray key;
+	private BitArrayBooleanList key;
 	
 	/* sa fréquence d'apparition */ 
 	transient private int freq;
 	
 	/* sa valeur encodée */
-	transient private BitArray encValue;
+	transient private BitArrayBooleanList encValue;
 	
-	public FreqCode(BitArray key,int freq){
+	public FreqCode(BitArrayBooleanList key,int freq){
 		setKey(key);
 		setFreq(freq);
 	}
@@ -36,11 +36,11 @@ public class FreqCode implements Comparable<FreqCode>,Serializable {
 	/**
 	 * Accesseurs
 	 */
-	public BitArray getKey() {
+	public BitArrayBooleanList getKey() {
 		return key;
 	}
 	
-	public void setKey(BitArray key) {
+	public void setKey(BitArrayBooleanList key) {
 		this.key = key;
 	}
 	
@@ -54,10 +54,10 @@ public class FreqCode implements Comparable<FreqCode>,Serializable {
 		this.freq++;
 	}
 	
-	public BitArray getEncValue(){
+	public BitArrayBooleanList getEncValue(){
 		return encValue;
 	}
-	public void setEncValue(BitArray encValue){
+	public void setEncValue(BitArrayBooleanList encValue){
 		this.encValue = encValue;
 	}
 	

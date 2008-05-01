@@ -8,13 +8,13 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import bitutils.BitArray;
+import bitutils.BitArrayBooleanList;
 import bitutils.BitOutputStream;
 
 public class TestBitOutputStream{
 
 	static final byte[] b = new byte[]{(byte)'0',(byte)'1','6','8','4','6','5','9'};
-	BitArray bitArray = new BitArray(b);
+	BitArrayBooleanList bitArray = new BitArrayBooleanList(b);
 
 	@Test
 	public void testFlush() {

@@ -80,8 +80,7 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 		{
 			File inputFile = new File(ihm.getJTextFieldFileSrc().getText());
 			File outputFile = new File(ihm.getJTextFieldFileDest().getText());
-			//File inputFile = new File("/home/gbillou/testEncodage.txt");
-			//File outputFile = new File("/home/gbillou/testEncodage.txt.2");
+
 			HuffmanEncode he = new HuffmanEncode();
 			
 			try{
