@@ -110,11 +110,24 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 		{
 			File inputFile = new File(ihm.getJTextFieldFileSrc().getText());
 			File outputFile = new File(ihm.getJTextFieldFileDest().getText());
+
+			HuffmanDecode hd = new HuffmanDecode();
 			
 			try{
-				ihm.setHuffmaneur(new HuffmanDecode(inputFile, outputFile));
-			}catch(FileNotFoundException ignore){}
+				hd.setInputFile(inputFile);
+			}catch(FileNotFoundException ignored){
+				System.out.println("Erreur inputFile");
+				return;
+			}
 			
+			try{
+				hd.setOutputFile(outputFile);
+			}catch(FileNotFoundException ignored){
+				System.out.println("Erreur outputFile");
+				return;
+			}
+			
+			ihm.setHuffmaneur(hd);
 			ihm.getHuffmaneur().addPropertyChangeListener(ihm.getProgressBar());
 			ihm.getHuffmaneur().addPropertyChangeListener(this);
 			ihm.getHuffmaneur().start();
