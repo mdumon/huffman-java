@@ -61,19 +61,36 @@ public class HuffmanDecode extends Huffmaneur {
 		tl.log("On crée un arbre d'huffman");
 		ba = new BitArrayBooleanArray();
 		HuffmanTree ht = null;
+		ObjectInputStream ois = null;
 		try {
-			ObjectInputStream ois = new ObjectInputStream(bis);
+			ois = new ObjectInputStream(bis);
 			ht = (HuffmanTree) ois.readObject();
-			nbElements = ois.readInt();
-		} catch (ClassNotFoundException ignore) {}
-		catch (IOException ignore2){}
+		} catch (ClassNotFoundException ignore) {
+			System.out.println("ClassNotFoundException : " + ignore.getMessage());
+		}
+		catch (IOException ignore2){
+			System.out.println("IOException : " + ignore2.getMessage());
+		}
+		
+		tl.log("arbre récupéré OK");
+		
+		try {
+			Integer nbElem = (Integer) ois.readObject();
+			nbElements = nbElem.intValue();
+		}
+		catch (IOException ignore2){
+			System.out.println("IOException : " + ignore2.getMessage());
+		} catch (ClassNotFoundException e) {
+			System.out.println("ClassNotFoundException : " + e.getMessage());
+		}
 
 		/* On lance le décodage */
 		tl.log("D�but du d�codage (nbElements : " + nbElements + ")");
 		
 		int retval;
-		for(int i = 0; i < nbElements ; i++){
+		for(int i = 1; i <= nbElements ; i++){
 			retval = decArbre(ba, ht.getRoot(), bis, bos);
+			setAdvance(i*100/nbElements);
 			if(retval == -1) break; /* fin du fichier, on sort */
 		}
 
@@ -95,9 +112,11 @@ public class HuffmanDecode extends Huffmaneur {
 
 		if(node.getValue() != null){
 			try {
+				/*
 				System.out.println("Valeur trouv�e : " + node.getValue().getKey());
 				System.out.println("Valeur encod�e lue dans le fichier : " + ba);
 				System.out.println("Caract�re � �crire : " + node.getValue().getKey().toByteArray()[0]);
+				*/
 				bos.writeBits(node.getValue().getKey());
 				ba.clear();
 			}catch (IOException ignore4){}
@@ -114,7 +133,7 @@ public class HuffmanDecode extends Huffmaneur {
 			}catch (ArrayIndexOutOfBoundsException i){
 			}catch (IOException t){}
 
-			System.out.println("lu : " + ba + "\nsize : " + ba.size());
+			//System.out.println("lu : " + ba + "\nsize : " + ba.size());
 
 			try{
 				return decArbre(ba, (b)?node.getRightSon():node.getLeftSon() , bis, bos);

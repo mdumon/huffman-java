@@ -19,13 +19,13 @@ import java.io.ObjectOutput;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class BitArrayBooleanArray implements BitArray, Externalizable{
+public class BitArrayByteArray implements BitArray, Externalizable{
 	private static final long serialVersionUID = 1L;
 	
 	/* liste utilisée pour stocker en interne les bits */ 
-	private boolean[] boolArray;
+	private byte[] byteArray;
 	
-	/* Taille (nombre d'éléments) du boolArray */
+	/* Taille (nombre d'éléments) du byteArray */
 	private int size = 0;
 	public int size() {
 		return size;
@@ -40,8 +40,8 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 		this.size = size;
 	}
 	
-	protected final int initialCapacity = 16;
-	protected final int capacityIncrement = 8;
+	protected final int initialCapacity = 2;
+	protected final int capacityIncrement = 1;
 	
 	/* Constante représentant l'endianness dans laquelle le BitArray travaille (BIG_ENDIAN uniquement pour le moment) */
 	public enum Endianness { BIG_ENDIAN, LITTLE_ENDIAN };
@@ -52,8 +52,8 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 	/**
 	 * Build an empty BitArray
 	 */
-	public BitArrayBooleanArray(){
-		boolArray = new boolean[initialCapacity];
+	public BitArrayByteArray(){
+		byteArray = new byte[initialCapacity];
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 	 * @param tb Byte Array from which bits will be read
 	 * @throws ArrayTooShortException Thrown when tb contain less bits than nbBits
 	 */
-	public BitArrayBooleanArray(byte[] b){
+	public BitArrayByteArray(byte[] b){
 		this(b,b.length*8);
 	}
 	
@@ -71,7 +71,7 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 	 * @param nbBits Number of bits to be read
 	 * @throws ArrayTooShortException Thrown when tb contain less bits than nbBits
 	 */
-	public BitArrayBooleanArray(byte[] b,int nbBits) throws ArrayTooShortException{
+	public BitArrayByteArray(byte[] b,int nbBits) throws ArrayTooShortException{
 		this(b,nbBits,0);
 	}
 	
@@ -82,7 +82,7 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 	 * @param bitOff bit offset from which we'll start reading
 	 * @throws ArrayTooShortException Thrown when tb contain less bits than nbBits+bitOff
 	 */
-	public BitArrayBooleanArray(byte[] tb,int nbBits,int bitOff) throws ArrayTooShortException{
+	public BitArrayByteArray(byte[] tb,int nbBits,int bitOff) throws ArrayTooShortException{
 		this(tb,nbBits,bitOff,0);
 	}
 	
@@ -94,7 +94,7 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 	 * @param byteOff byte offset from which we'll start reading (reading will start at bit byteOff*8+bitOff)
 	 * @throws ArrayTooShortException Thrown when tb contain less bits than nbBits+bitOff+byteOff*8
 	 */
-	public BitArrayBooleanArray(byte[] tb,int nbBits,int bitOff,int byteOff) throws ArrayTooShortException{
+	public BitArrayByteArray(byte[] tb,int nbBits,int bitOff,int byteOff) throws ArrayTooShortException{
 		this();
 		
 		if(tb.length*8 < (nbBits+bitOff)) throw new ArrayTooShortException();
@@ -108,7 +108,7 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 		}
 	}
 	
-	public BitArrayBooleanArray(BitArrayBooleanArray ba){
+	public BitArrayByteArray(BitArrayBooleanArray ba){
 		this();
 		
 		for(boolean b : ba)
@@ -194,9 +194,9 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 	
 	@Override
 	public boolean equals(Object ba){
-		if(!(ba instanceof BitArrayBooleanArray)) return false;
+		if(!(ba instanceof BitArrayByteArray)) return false;
 
-		return Arrays.equals(boolArray, ((BitArrayBooleanArray)ba).boolArray);
+		return Arrays.equals(byteArray, ((BitArrayByteArray)ba).byteArray);
 	}
 	
 	
@@ -205,9 +205,9 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 	private class BitArrayIterator implements Iterator<Boolean>{
 		
 		private int index = 0;
-		private BitArrayBooleanArray ba;
+		private BitArrayByteArray ba;
 		
-		public BitArrayIterator(BitArrayBooleanArray ba){
+		public BitArrayIterator(BitArrayByteArray ba){
 			this.ba = ba;
 		}
 		
@@ -231,12 +231,13 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 		return new BitArrayIterator(this);
 	}
 	
-	public BitArrayBooleanArray add(boolean b){
+	public BitArrayByteArray add(boolean b){
 		
-		if(size() >= boolArray.length)
-			boolArray = Arrays.copyOf(boolArray, boolArray.length + capacityIncrement);
+		if(size() >= byteArray.length*8)
+			byteArray = Arrays.copyOf(byteArray, byteArray.length + capacityIncrement);
 			
-		boolArray[size++] = b;
+		if(b)
+			byteArray[size/8] |=  (1 << (endianShift - (size%8)));
 
 		return this;
 	}
@@ -245,16 +246,17 @@ public class BitArrayBooleanArray implements BitArray, Externalizable{
 		if(index < 0 || index > size())
 			throw new ArrayIndexOutOfBoundsException();
 		
-		if(size() >= boolArray.length)
-			boolArray = Arrays.copyOf(boolArray, boolArray.length + capacityIncrement);
+		if(size() >= byteArray.length*8)
+			byteArray = Arrays.copyOf(byteArray, byteArray.length + capacityIncrement);
 		
 		boolean oldB = b;
 		for(int i = index; i < size();i++){
-			oldB = boolArray[i];
-			boolArray[i] = b;
+			oldB = ((byteArray[i/8] >> (i%8)) & 1) == 1;
+			if(b) 
+				byteArray[i/8] |= (1 << (endianShift - (i%8)));
 			b = oldB;
 		}
-		boolArray[size++] = oldB;
+		if(oldB) byteArray[(size++/8)] |= (1 << (endianShift - (size%8)));
 		
 		return this;
 	}

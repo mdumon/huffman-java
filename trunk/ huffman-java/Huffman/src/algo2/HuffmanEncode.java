@@ -3,7 +3,6 @@ package algo2;
 import groupe2.TimedLog;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -56,6 +55,8 @@ public class HuffmanEncode extends Huffmaneur {
 		BitArray ba;
 		int dicoSize = getDicoSize();
 		TimedLog tl = new TimedLog();
+		long advTotal; // Total d'advance à avoir
+		long advCurrent = 0;
 		
 		tl.start();
 		
@@ -63,12 +64,17 @@ public class HuffmanEncode extends Huffmaneur {
 		/* On ouvre l'inputFile */
 		try {
 			bis = new BitInputStream(new BufferedInputStream(new FileInputStream(getInputFile())));
-		} catch (FileNotFoundException ignore) { return; }
+		} catch (FileNotFoundException ignore) {
+			System.out.println("BitInputStream : " + ignore.getMessage());
+			return;
+		}
 		
 		tl.log("Création du tableau de fréquence, dico : " + getDicoSize());
 		
+		advTotal = getInputFile().length()*4;
+		
 		/* On créer un tableau de fréquence basé sur l'inputFile */
-		list = new FreqCode[(int)Math.pow(2.0, dicoSize)];
+		list = new FreqCode[((int)Math.pow(2.0, dicoSize))/2];
 		nbFreqCode = 0;
 		nbElements = 0;
 		boolean found;
@@ -78,8 +84,20 @@ public class HuffmanEncode extends Huffmaneur {
 			while(true){
 				ba = bis.readBits(dicoSize);
 				
-				if(ba.size() != dicoSize) break;
+				/* Si on est à la fin du fichier on s'arrete */
+				if(ba.size() == 0) break;
+				
 				nbElements++;
+				advCurrent++;
+				setAdvance((int)(advCurrent*100/advTotal));
+				
+				/* Si on a lu genre 3 bit alors que le dico en fait 9, on écrit notre dernier freqcode et on quitte */
+				if(ba.size() != dicoSize){
+					if(nbFreqCode >= list.length)
+						list = Arrays.copyOf(list, list.length + 1);
+					list[nbFreqCode++] = new FreqCode(ba,1);
+					break;
+				}
 				
 				for(i = 0; i < nbFreqCode; i++){
 					fc = list[i];
@@ -88,8 +106,12 @@ public class HuffmanEncode extends Huffmaneur {
 						break;
 					}	
 				}
-				if(i >= nbFreqCode)
+				if(i >= nbFreqCode){
+					if(nbFreqCode >= list.length)
+						list = Arrays.copyOf(list, list.length + list.length/2);
 					list[nbFreqCode++] = new FreqCode(ba,1);
+				}
+					
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -119,8 +141,8 @@ public class HuffmanEncode extends Huffmaneur {
 		/* On obtient dans notre tableau de FreqCode l'encodage des elements */
 		ht.Build(list);
 		
-		int tota = 0;
-		int totb = 0;
+		/*int tota = 0;
+		int totb = 0;*/
 		tl.log("Sérialisation de l'arbre");
 		/* On ouvre l'outputFile */
 		try {
@@ -133,16 +155,16 @@ public class HuffmanEncode extends Huffmaneur {
 			oos.writeObject(ht);
 			
 			/* On sérialise le nombre de feuilles */
-			oos.writeInt(nbElements);
+			oos.writeObject(new Integer(nbElements));
 		} catch (IOException e) {}
 		
-		try {
+		/*try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			new ObjectOutputStream(baos).writeObject(ht);
 			tota += baos.toByteArray().length;
 		} catch (IOException e) {}
 		tl.log("Arbre lenght => " + tota);
-		
+		*/
 		
 		
 		
@@ -158,15 +180,16 @@ public class HuffmanEncode extends Huffmaneur {
 		try {
 			while(true){
 				ba = bis.readBits(dicoSize);
-				if(ba.size() != dicoSize) break;
+				
+				if(ba.size() == 0) break;
 				
 				found = false;
 				for(i = 0; i < nbFreqCode; i++){
 					fc = list[i];
 					if(ba.equals(fc.getKey())){
 						//System.out.println("Ecriture du bit " + i++ + "[" + ba + "] => [" + fc.getEncValue() + "]" );
-						tota += fc.getEncValue().size();
-						totb += 8;
+						//tota += fc.getEncValue().size();
+						//totb += fc.getKey().size();
 						bos.writeBits(fc.getEncValue());
 						found = true;
 						break;
@@ -175,13 +198,17 @@ public class HuffmanEncode extends Huffmaneur {
 				if(!found){
 					tl.log("Erreur encodage inconnu pour ce BitArray");
 				}
+				
+				advCurrent += 3;
+				setAdvance((int)(advCurrent*100/advTotal));
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		tl.log("Avant : " + totb);
-		tl.log("Après : " + tota);
-		
+		//tl.log("Avant : " + totb);
+		//tl.log("Après : " + tota);
+		tl.log("Fin");
 		
 		/* On ferme les différentes streams */
 		try {
