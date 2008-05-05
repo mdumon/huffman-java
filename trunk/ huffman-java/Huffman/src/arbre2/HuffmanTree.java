@@ -10,8 +10,14 @@ import bitutils.BitArrayBooleanList;
 public class HuffmanTree extends Tree<FreqCode> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+	
+	transient private FreqCode[] fcs;
+	
+	public HuffmanTree(FreqCode[] fcs){
+		this.fcs = fcs;
+	}
 
-	public void Build(FreqCode[] fcs){
+	public void Build(){
 		List<ValuedNode> vns = new ArrayList<ValuedNode>();
 		
 		/* On créer notre tableau mais dans le sens inverse, du moins fréquent au plus fréquent */
@@ -36,7 +42,9 @@ public class HuffmanTree extends Tree<FreqCode> implements Serializable{
 		
 		/* On place la racine */
 		setRoot(vns.remove(0));
+	}
 	
+	public void FillEncodedValues(){
 		/* On rempli le membre EncValue des FreqCodes */
 		parcoursArbre(getRoot(),new BitArrayBooleanList());
 		
