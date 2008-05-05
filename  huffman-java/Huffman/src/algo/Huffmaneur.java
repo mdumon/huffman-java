@@ -73,7 +73,7 @@ public abstract class Huffmaneur extends Thread implements Advanceable{
 		return advance;
 	}
 	
-	private File inputFile;
+	private File inputFile = null;
 	public void setInputFile(File inputFile) throws FileNotFoundException{
 		if(!inputFile.exists()) throw new FileNotFoundException(inputFile.getAbsolutePath());
 		if(!inputFile.canRead()) throw new FileNotFoundException(inputFile.getAbsolutePath());
@@ -84,7 +84,7 @@ public abstract class Huffmaneur extends Thread implements Advanceable{
 		return this.inputFile;
 	}
 	
-	private File outputFile;
+	private File outputFile = null;
 	public void setOutputFile(File outputFile) throws FileNotFoundException{
 		
 		if(outputFile.exists()){

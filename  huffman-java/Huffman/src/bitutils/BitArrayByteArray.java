@@ -13,7 +13,6 @@
 
 import java.io.Externalizable;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Arrays;
@@ -261,17 +260,22 @@ public class BitArrayByteArray implements BitArray, Externalizable{
 		return this;
 	}
 	
+	/* TODO : finir l'implémentation à partir d'ici */
 	public boolean remove(int index){
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException();
 		
 		boolean ret;
 		
-		ret = boolArray[index];
-		
-		for(int i = index+1; i < size(); i++)
-			boolArray[i-1] = boolArray[i];
-		
+		ret = ((byteArray[index/8] >> (index%8)) & 1) == 1;
+		/*
+		for(int i = index+1; i < size(); i++){
+			if(((byteArray[i/8] >> (i%8)) & 1) == 1)
+				byteArray[(i-1)/8] |= (1 << (endianShift - ((i-1)%8)));
+			else
+				byteArray[(i-1)/8] &= (1 << (endianShift - ((i-1)%8))) == ;
+		}
+		*/
 		decSize();
 		
 		return ret;
@@ -279,7 +283,7 @@ public class BitArrayByteArray implements BitArray, Externalizable{
 	
 	public boolean removeLast(){
 		decSize();
-		return boolArray[size()];
+		return byteArray[size()] == 1;
 	}
 	
 	public void clear(){
@@ -290,18 +294,18 @@ public class BitArrayByteArray implements BitArray, Externalizable{
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException();
 		
-		return boolArray[index];
+		return byteArray[index] == 1;
 	}
 	
 	public void set(int index, boolean value){
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException();
 		
-		boolArray[index] = value;
+		byteArray[index] = (byte)((value)?1:0);
 	}
 	
 	public void setLast(boolean value){
-		boolArray[size()-1] = value;
+		byteArray[size()-1] = (byte)((value)?1:0);;
 	}
 	
 	public boolean isEmpty(){
@@ -327,11 +331,11 @@ public class BitArrayByteArray implements BitArray, Externalizable{
 	
 
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		this.size = in.readByte();
+		/*this.size = in.readByte();
 		if(size() == 0) return;
 		
 		BitInputStream bis = new BitInputStream((InputStream)in);
-		this.boolArray = bis.readBits(size()).toBooleanArray();
+		this.byteArray = bis.readBits(size()).toBooleanArray(); */
 		return;
 	}
 }

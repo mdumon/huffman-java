@@ -2,7 +2,7 @@ package groupe2;
 
 import java.util.Date;
 
-public class TimedLog {
+public class TimedLog implements Logger{
 	
 	private long debut;
 	
