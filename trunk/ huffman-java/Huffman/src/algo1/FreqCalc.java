@@ -1,5 +1,6 @@
 package algo1;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import bitutils.BitInputStream;
 
 public class FreqCalc{
 	
-	public static ArrayList<Node> getFrequences(String fichier, int dicoSize) throws FileNotFoundException{
+	public static ArrayList<Node> getFrequences(File fichier, int dicoSize) throws FileNotFoundException{
 		
 		ArrayList<Node> valueNodeList = new ArrayList<Node>();
 		FileInputStream fp = new FileInputStream(fichier);
@@ -29,8 +30,10 @@ public class FreqCalc{
 			if(valueNode.getValue().size() == 0) return valueNodeList;
 			if(valueNodeList.contains(valueNode))
 				((ValueNode)valueNodeList.get(valueNodeList.indexOf(valueNode))).incFreq();
-			else
+			else {
+				System.out.print("Ajout de " + valueNode);
 				valueNodeList.add(valueNode);
+			}
 		}
 		
 	}
