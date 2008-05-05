@@ -1,18 +1,21 @@
 package algo1;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Arrays;
 
-import bitutils.BitArray;
-
-import tri.test.Tri;
+import bitutils.BitArrayBooleanArray;
+import bitutils.BitInputStream;
 
 import algo.Huffmaneur;
 import arbre1.Arbre;
+import arbre1.Code;
 import arbre1.FreqNode;
 import arbre1.LeafNode;
 import arbre1.Node;
@@ -20,14 +23,28 @@ import arbre1.ValueNode;
 
 public class HuffmanEncode extends Huffmaneur{
 	
-	public HuffmanEncode(File input, File output)throws FileNotFoundException{
-		super(input, output);
+	private int tailleDico;
+	
+	public void setTailleDico(int tailleDico){
+		this.tailleDico = tailleDico;
 	}
 	
-	private Node[] ouvrirFichier(String nomFichier, int tailleDico) throws FileNotFoundException{
+	public int getTailleDico(){
+		return this.tailleDico;
+	}
+	
+	public HuffmanEncode(File input, File output)throws FileNotFoundException{
+		this(input, output, 8);
+	}
+	
+	public HuffmanEncode(File input, File output, int tailleDico)throws FileNotFoundException{
+		super(input, output);
+		setTailleDico(tailleDico);
+	}
+	
+	private Node[] ouvrirFichier(File fichier) throws FileNotFoundException{
 		ArrayList<Node> noeuds = null;
-		noeuds = FreqCalc.getFrequences(nomFichier, tailleDico);
-		System.out.println(noeuds.size());
+		noeuds = FreqCalc.getFrequences(fichier, getTailleDico());
 		
 		Node[] tabNoeuds = new Node[noeuds.size()];
 		noeuds.toArray(tabNoeuds);
@@ -36,21 +53,21 @@ public class HuffmanEncode extends Huffmaneur{
 	}
 	
 	private void trierTableau(Node[] noeuds){
-		Tri.sort(noeuds);
+		Arrays.sort(noeuds);
 	}
 	
 	private Node[] fusionnerPremiers(Node[] noeuds){
 		int freq1 = 0, freq2 = 0;
-		BitArray value1 = null, value2 = null;
+		BitArrayBooleanArray value1 = null, value2 = null;
 		if (noeuds[0] instanceof ValueNode){
 			freq1 = ((ValueNode)noeuds[0]).getFreq();
-			value1 = ((ValueNode)noeuds[0]).getValue();
+			value1 = (BitArrayBooleanArray)((ValueNode)noeuds[0]).getValue();
 		} else {
 			freq1 = ((FreqNode)noeuds[0]).getFreq();
 		}
 		if (noeuds[1] instanceof ValueNode){
 			freq2 = ((ValueNode)noeuds[1]).getFreq();
-			value2 = ((ValueNode)noeuds[1]).getValue();
+			value2 = (BitArrayBooleanArray)((ValueNode)noeuds[1]).getValue();
 		} else {
 			freq2 = ((FreqNode)noeuds[1]).getFreq();
 		}
@@ -64,23 +81,23 @@ public class HuffmanEncode extends Huffmaneur{
 		FreqNode noeud = new FreqNode(freq1 + freq2, left, right);
 		
 		noeuds[1] = noeud;
-		Node[] nTab = new Node[noeuds.length-1];
-		for (int i=0; i<nTab.length; i++){
-			nTab[i] = noeuds[i+1];
+		Node[] tabNoeuds = new Node[noeuds.length-1];
+		for(int i=0; i<tabNoeuds.length; i++){
+			tabNoeuds[i] = noeuds[i+1];
 		}
-		
-		return nTab;
+		return tabNoeuds;
 	}
 	
-	public int enregistrerArbre(Arbre a)
+	public int enregistrerFichier(Arbre arbre, ArrayList<BitArrayBooleanArray> contenu)
 	{
 		try
 		{
-			FileOutputStream fiOut = new FileOutputStream("/home/quentin/Documents/workspace/Huffman/src/algo1/test/fichierTestCom");
-			ObjectOutputStream fileOut = new ObjectOutputStream(fiOut);
-			fileOut.writeObject(a);
+			FileOutputStream fichierOut = new FileOutputStream(getOutputFile());
+			ObjectOutputStream fileOut = new ObjectOutputStream(fichierOut);
+			fileOut.writeObject(arbre);
+			fileOut.writeObject(contenu);
 			fileOut.close();
-			System.out.println("L'arbre a été sauvegardé dans '/home/quentin/Documents/workspace/Huffman/src/algo1/test/fichierTestCom'\n");
+			System.out.println("Enregistrement terminé !\n");
 			return 0;
 		}
 		catch (Exception e)
@@ -90,42 +107,102 @@ public class HuffmanEncode extends Huffmaneur{
 		}
 	}
 	
-	private Hashtable<BitArray, BitArray> tableCorrespondance(Arbre arbre){
-		Hashtable<BitArray, BitArray> table = new Hashtable<BitArray, BitArray>();
+	private ArrayList<Code> tableCorrespondance(Arbre arbre){
+		ArrayList<Code> table = new ArrayList<Code>();
 		
-		Node temp = arbre.getNode();
+		parcourirArbre(arbre.getNode(), table, new BitArrayBooleanArray());
 		
 		return table;
+	}
+	
+	private void parcourirArbre(Node courant, ArrayList<Code> tableCodage, BitArrayBooleanArray debut){
+		if (courant != null){
+			if (courant instanceof LeafNode){
+				tableCodage.add(new Code(((LeafNode)courant).getValue(), new BitArrayBooleanArray(debut)));
+			} else {
+				debut.add(false);
+				parcourirArbre(((FreqNode)courant).getLeft(), tableCodage, debut);
+				debut.setLast(true);
+				parcourirArbre(((FreqNode)courant).getRight(), tableCodage, debut);
+				debut.removeLast();
+			}
+		}
+	}
+	
+	private ArrayList<BitArrayBooleanArray> encode(BitInputStream fichier, ArrayList<Code> tableCodage){
+		ArrayList<BitArrayBooleanArray> fichierEncode = new ArrayList<BitArrayBooleanArray>();
+		
+		while(true)
+		{
+			BitArrayBooleanArray bitarray = null;
+			try {
+				BitArrayBooleanArray temp = (BitArrayBooleanArray)fichier.readBits(getTailleDico());
+				if(tableCodage.contains(new Code(temp, new BitArrayBooleanArray()))){
+					bitarray = ((BitArrayBooleanArray)((Code)tableCodage.get(tableCodage.indexOf(new Code(temp, new BitArrayBooleanArray())))).getValue());
+				}
+			} catch (IOException e) {
+				return fichierEncode;
+			}
+			if(bitarray == null) return fichierEncode;
+			fichierEncode.add(bitarray);
+		}
 	}
 	
 	@Override
 	protected void huffmaner() {
 		Node[] noeuds = null;
 		try{
-			noeuds = ouvrirFichier("/home/quentin/Documents/workspace/Huffman/src/algo1/test/fichierTest", 8);
+			noeuds = ouvrirFichier(getInputFile());
 		} catch (FileNotFoundException e){
 			e.printStackTrace();
 		}
 
+		System.out.println("Table fréquences pas triée ("+noeuds.length+"):");
+		
+		for(int i=0; i<noeuds.length; i++){
+			System.out.print(noeuds[i]);
+		}
+		System.out.println("");
+		
 		trierTableau(noeuds);
+		
+		System.out.println("Table fréquences :");
+		
+		for(int i=0; i<noeuds.length; i++){
+			System.out.print(noeuds[i]);
+		}
+		System.out.println("");
 		
 		while(noeuds.length != 1){
 			noeuds = fusionnerPremiers(noeuds);
 			trierTableau(noeuds);
 		}
 		
-		System.out.println(noeuds[0]);
-		
 		Arbre arbre = new Arbre();
 		arbre.setNode(noeuds[0]);
 		
-		//enregistrerArbre(arbre);
+		System.out.println(arbre);
+		
+		//Hashtable<BitArrayBooleanArray, BitArrayBooleanArray> correspondances = tableCorrespondance(arbre);
+		ArrayList<Code> correspondances= tableCorrespondance(arbre);
+		ArrayList<BitArrayBooleanArray> fichierEncode = null;
+		try{
+			FileInputStream fp = new FileInputStream(getInputFile());
+			BitInputStream bitInputStream = new BitInputStream((InputStream)fp);
+			fichierEncode = encode(bitInputStream, correspondances);
+		} catch (FileNotFoundException e){
+			System.err.println("Fichier introuvable !");
+		}
+		
+		System.out.println(fichierEncode);
+		
+		if (fichierEncode != null) enregistrerFichier(arbre, fichierEncode);
 		
 	}
 	
 	public static void main (String args[]){
-		File in = new File("/home/quentin/Documents/workspace/Huffman/src/algo1/test/fichierTest");
-		File out = new File("/home/quentin/Documents/workspace/Huffman/src/algo1/test/fichierTestCom");
+		File in = new File("/home/quentin/Documents/workspace/Projet Huffman/src/algo1/test/fichierTest");
+		File out = new File("/home/quentin/Documents/workspace/Projet Huffman/src/algo1/test/fichierTestCom");
 		HuffmanEncode test = null;
 		try {
 			test = new HuffmanEncode(in, out);
