@@ -21,27 +21,63 @@ import arbre1.LeafNode;
 import arbre1.Node;
 import arbre1.ValueNode;
 
+/**
+ * <code>HuffmanEncode</code> implements the Huffman encoding algorithm
+ * 
+ * @author Quentin Douillet
+ *
+ */
+
 public class HuffmanEncode extends Huffmaneur{
 	
 	private int tailleDico;
 	
+	/**
+	 * Set the size of the dictionnary
+	 * 
+	 * @param tailleDico
+	 */
 	public void setTailleDico(int tailleDico){
 		this.tailleDico = tailleDico;
 	}
 	
+	/**
+	 * Get the size of the dictionnary
+	 * 
+	 * @return The size of the dictionnary
+	 */
 	public int getTailleDico(){
 		return this.tailleDico;
 	}
 	
+	/**
+	 * 
+	 * @param input The file to be read
+	 * @param output The file to be wrote
+	 * @throws FileNotFoundException If the file to be read is not found
+	 */
 	public HuffmanEncode(File input, File output)throws FileNotFoundException{
 		this(input, output, 8);
 	}
 	
+	/**
+	 * 
+	 * @param input The file to be read
+	 * @param output The file to be wrote
+	 * @param tailleDico The size of the dictionnary
+	 * @throws FileNotFoundException If the file to be read is not found
+	 */
 	public HuffmanEncode(File input, File output, int tailleDico)throws FileNotFoundException{
 		super(input, output);
 		setTailleDico(tailleDico);
 	}
 	
+	/**
+	 * 
+	 * @param fichier The file to be read
+	 * @return An array of nodes representing each BitArray with their frequence in the file
+	 * @throws FileNotFoundException If the file to be read is not found
+	 */
 	private Node[] ouvrirFichier(File fichier) throws FileNotFoundException{
 		ArrayList<Node> noeuds = null;
 		noeuds = FreqCalc.getFrequences(fichier, getTailleDico());
@@ -52,10 +88,20 @@ public class HuffmanEncode extends Huffmaneur{
 		return tabNoeuds;
 	}
 	
+	/**
+	 * Sort an array of nodes
+	 * 
+	 * @param noeuds The array to be sorted
+	 */
 	private void trierTableau(Node[] noeuds){
 		Arrays.sort(noeuds);
 	}
 	
+	/**
+	 * 
+	 * @param noeuds The array to be marged
+	 * @return An array with the two firsts elements of the given array are merged in a FreqNode
+	 */
 	private Node[] fusionnerPremiers(Node[] noeuds){
 		int freq1 = 0, freq2 = 0;
 		BitArrayBooleanArray value1 = null, value2 = null;
@@ -88,7 +134,14 @@ public class HuffmanEncode extends Huffmaneur{
 		return tabNoeuds;
 	}
 	
-	public int enregistrerFichier(Arbre arbre, ArrayList<BitArrayBooleanArray> contenu)
+	/**
+	 * Save the compressed file
+	 * 
+	 * @param arbre The tree of the Huffman algorithm
+	 * @param contenu An ArrayList containing the compressed bit of the file
+	 * @return True if the file is saved or false if is not
+	 */
+	public boolean enregistrerFichier(Arbre arbre, ArrayList<BitArrayBooleanArray> contenu)
 	{
 		try
 		{
@@ -98,15 +151,21 @@ public class HuffmanEncode extends Huffmaneur{
 			fileOut.writeObject(contenu);
 			fileOut.close();
 			System.out.println("Enregistrement terminé !\n");
-			return 0;
+			return false;
 		}
 		catch (Exception e)
 		{
 			System.out.println("Problème de sauvegarde... -- "+e);
-			return 1;
+			return true;
 		}
 	}
 	
+	/**
+	 * Make an array of Code (to know the compressed representation of a given BitArray)
+	 * 
+	 * @param arbre The Huffman tree
+	 * @return An array of Code
+	 */
 	private ArrayList<Code> tableCorrespondance(Arbre arbre){
 		ArrayList<Code> table = new ArrayList<Code>();
 		
@@ -115,6 +174,12 @@ public class HuffmanEncode extends Huffmaneur{
 		return table;
 	}
 	
+	/**
+	 * 
+	 * @param courant The current node
+	 * @param tableCodage The Code array
+	 * @param debut The begginning of the compressed BitArray
+	 */
 	private void parcourirArbre(Node courant, ArrayList<Code> tableCodage, BitArrayBooleanArray debut){
 		if (courant != null){
 			if (courant instanceof LeafNode){
@@ -129,6 +194,13 @@ public class HuffmanEncode extends Huffmaneur{
 		}
 	}
 	
+	/**
+	 * Encode the file
+	 * 
+	 * @param fichier The file to be read
+	 * @param tableCodage The Code array to encode the file
+	 * @return An array containing the encoded BitArray
+	 */
 	private ArrayList<BitArrayBooleanArray> encode(BitInputStream fichier, ArrayList<Code> tableCodage){
 		ArrayList<BitArrayBooleanArray> fichierEncode = new ArrayList<BitArrayBooleanArray>();
 		
