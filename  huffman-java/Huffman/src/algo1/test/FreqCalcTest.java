@@ -1,7 +1,7 @@
 package algo1.test;
 
 import java.util.ArrayList;
-
+import java.io.*;
 import tri.test.Tri;
 
 import algo1.FreqCalc;
@@ -13,7 +13,7 @@ public class FreqCalcTest {
 	public static void main(String args[]){
 		ArrayList<Node> nodeList = null;
 		try{
-			nodeList = FreqCalc.getFrequences("/home/quentin/Documents/workspace/Huffman/src/algo1/test/fichierTest", 8);
+			nodeList = FreqCalc.getFrequences(new File("/home/quentin/Documents/workspace/Huffman/src/algo1/test/fichierTest"), 8);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

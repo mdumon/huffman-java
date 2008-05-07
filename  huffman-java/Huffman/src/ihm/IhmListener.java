@@ -29,8 +29,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import algo2.HuffmanDecode;
-import algo2.HuffmanEncode;
+import algo1.*;
 
 
 /**
@@ -79,24 +78,11 @@ public class IhmListener implements ChangeListener, ActionListener, WindowListen
 		{
 			File inputFile = new File(ihm.getJTextFieldFileSrc().getText());
 			File outputFile = new File(ihm.getJTextFieldFileDest().getText());
+			HuffmanEncode he = null;
 
-			HuffmanEncode he = new HuffmanEncode();
-			
-			try{
-				he.setInputFile(inputFile);
-			}catch(FileNotFoundException ignored){
-				System.out.println("Erreur inputFile");
-				return;
-			}
-			
-			try{
-				he.setOutputFile(outputFile);
-			}catch(FileNotFoundException ignored){
-				System.out.println("Erreur outputFile");
-				return;
-			}
-
-			he.setDicoSize(ihm.getJSlider().getValue());
+			try {
+				he = new HuffmanEncode(inputFile,outputFile,ihm.getJSlider().getValue());
+			}catch (FileNotFoundException ex) {System.out.println(ex);}
 			
 			ihm.setHuffmaneur(he);
 			ihm.getHuffmaneur().addPropertyChangeListener(ihm.getProgressBar());

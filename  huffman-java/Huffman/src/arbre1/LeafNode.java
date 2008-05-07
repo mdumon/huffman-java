@@ -3,21 +3,22 @@ package arbre1;
 import java.io.Serializable;
 
 import bitutils.BitArray;
+import bitutils.BitArrayBooleanArray;
 
 public class LeafNode implements Node, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private BitArray value;
+	private BitArrayBooleanArray value;
 	
-	public LeafNode(BitArray value){
+	public LeafNode(BitArrayBooleanArray value){
 		this.value = value;
 	}
-	public BitArray getValue(){
+	public BitArrayBooleanArray getValue(){
 		return this.value;
 	}
 	
-	public void setValue(BitArray value) {
+	public void setValue(BitArrayBooleanArray value) {
 		this.value = value;
 	}
 	

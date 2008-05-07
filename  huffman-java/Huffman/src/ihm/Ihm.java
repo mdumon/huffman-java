@@ -233,7 +233,7 @@ public class Ihm {
 	JTextField getJTextFieldFileSrc() {
 		if (jTextFieldFileSrc == null) {
 			jTextFieldFileSrc = new JTextField(19);
-			jTextFieldFileSrc.setText("/home/gbillou/24319001.pdf");
+			jTextFieldFileSrc.setText("C:\\Documents and Settings\\nfhy4206\\My Documents\\FT-R&D\\2004tg19-001.pdf");
 		}
 		return jTextFieldFileSrc;
 	}
@@ -246,7 +246,7 @@ public class Ihm {
 	JTextField getJTextFieldFileDest() {
 		if (jTextFieldFileDest == null) {
 			jTextFieldFileDest = new JTextField(19);
-			jTextFieldFileDest.setText("/home/gbillou/24319001.pdf.2");
+			jTextFieldFileDest.setText("C:\\Documents and Settings\\nfhy4206\\My Documents\\FT-R&D\\2004tg19-001-encode.pdf");
 		}
 		return jTextFieldFileDest;
 	}
