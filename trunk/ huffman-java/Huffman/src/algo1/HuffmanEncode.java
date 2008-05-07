@@ -29,9 +29,9 @@ import arbre1.ValueNode;
  */
 
 public class HuffmanEncode extends Huffmaneur{
-	
+
 	private int tailleDico;
-	
+
 	/**
 	 * Set the size of the dictionnary
 	 * 
@@ -40,7 +40,7 @@ public class HuffmanEncode extends Huffmaneur{
 	public void setTailleDico(int tailleDico){
 		this.tailleDico = tailleDico;
 	}
-	
+
 	/**
 	 * Get the size of the dictionnary
 	 * 
@@ -49,7 +49,7 @@ public class HuffmanEncode extends Huffmaneur{
 	public int getTailleDico(){
 		return this.tailleDico;
 	}
-	
+
 	/**
 	 * 
 	 * @param input The file to be read
@@ -59,7 +59,7 @@ public class HuffmanEncode extends Huffmaneur{
 	public HuffmanEncode(File input, File output)throws FileNotFoundException{
 		this(input, output, 8);
 	}
-	
+
 	/**
 	 * 
 	 * @param input The file to be read
@@ -71,7 +71,7 @@ public class HuffmanEncode extends Huffmaneur{
 		super(input, output);
 		setTailleDico(tailleDico);
 	}
-	
+
 	/**
 	 * 
 	 * @param fichier The file to be read
@@ -81,13 +81,13 @@ public class HuffmanEncode extends Huffmaneur{
 	private Node[] ouvrirFichier(File fichier) throws FileNotFoundException{
 		ArrayList<Node> noeuds = null;
 		noeuds = FreqCalc.getFrequences(fichier, getTailleDico());
-		
+
 		Node[] tabNoeuds = new Node[noeuds.size()];
 		noeuds.toArray(tabNoeuds);
-		
+
 		return tabNoeuds;
 	}
-	
+
 	/**
 	 * Sort an array of nodes
 	 * 
@@ -96,7 +96,7 @@ public class HuffmanEncode extends Huffmaneur{
 	private void trierTableau(Node[] noeuds){
 		Arrays.sort(noeuds);
 	}
-	
+
 	/**
 	 * 
 	 * @param noeuds The array to be marged
@@ -117,15 +117,15 @@ public class HuffmanEncode extends Huffmaneur{
 		} else {
 			freq2 = ((FreqNode)noeuds[1]).getFreq();
 		}
-		
+
 		Node left = null, right = null;
 		if(value1 != null) left = new LeafNode(value1);
 		else left = noeuds[0];
 		if(value2 != null) right = new LeafNode(value2);
 		else right = noeuds[1];
-		
+
 		FreqNode noeud = new FreqNode(freq1 + freq2, left, right);
-		
+
 		noeuds[1] = noeud;
 		Node[] tabNoeuds = new Node[noeuds.length-1];
 		for(int i=0; i<tabNoeuds.length; i++){
@@ -133,7 +133,7 @@ public class HuffmanEncode extends Huffmaneur{
 		}
 		return tabNoeuds;
 	}
-	
+
 	/**
 	 * Save the compressed file
 	 * 
@@ -159,7 +159,7 @@ public class HuffmanEncode extends Huffmaneur{
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Make an array of Code (to know the compressed representation of a given BitArray)
 	 * 
@@ -168,12 +168,12 @@ public class HuffmanEncode extends Huffmaneur{
 	 */
 	private ArrayList<Code> tableCorrespondance(Arbre arbre){
 		ArrayList<Code> table = new ArrayList<Code>();
-		
+
 		parcourirArbre(arbre.getNode(), table, new BitArrayBooleanArray());
-		
+
 		return table;
 	}
-	
+
 	/**
 	 * 
 	 * @param courant The current node
@@ -193,7 +193,7 @@ public class HuffmanEncode extends Huffmaneur{
 			}
 		}
 	}
-	
+
 	/**
 	 * Encode the file
 	 * 
@@ -203,7 +203,7 @@ public class HuffmanEncode extends Huffmaneur{
 	 */
 	private ArrayList<BitArrayBooleanArray> encode(BitInputStream fichier, ArrayList<Code> tableCodage){
 		ArrayList<BitArrayBooleanArray> fichierEncode = new ArrayList<BitArrayBooleanArray>();
-		
+
 		while(true)
 		{
 			BitArrayBooleanArray bitarray = null;
@@ -219,7 +219,7 @@ public class HuffmanEncode extends Huffmaneur{
 			fichierEncode.add(bitarray);
 		}
 	}
-	
+
 	@Override
 	protected void huffmaner() {
 		Node[] noeuds = null;
@@ -230,31 +230,31 @@ public class HuffmanEncode extends Huffmaneur{
 		}
 
 		System.out.println("Table fréquences pas triée ("+noeuds.length+"):");
-		
+
 		for(int i=0; i<noeuds.length; i++){
 			System.out.print(noeuds[i]);
 		}
 		System.out.println("");
-		
+
 		trierTableau(noeuds);
-		
+
 		System.out.println("Table fréquences :");
-		
+
 		for(int i=0; i<noeuds.length; i++){
 			System.out.print(noeuds[i]);
 		}
 		System.out.println("");
-		
+
 		while(noeuds.length != 1){
 			noeuds = fusionnerPremiers(noeuds);
 			trierTableau(noeuds);
 		}
-		
+
 		Arbre arbre = new Arbre();
 		arbre.setNode(noeuds[0]);
-		
+
 		System.out.println(arbre);
-		
+
 		//Hashtable<BitArrayBooleanArray, BitArrayBooleanArray> correspondances = tableCorrespondance(arbre);
 		ArrayList<Code> correspondances= tableCorrespondance(arbre);
 		ArrayList<BitArrayBooleanArray> fichierEncode = null;
@@ -265,24 +265,10 @@ public class HuffmanEncode extends Huffmaneur{
 		} catch (FileNotFoundException e){
 			System.err.println("Fichier introuvable !");
 		}
-		
-		System.out.println(fichierEncode);
-		
-		if (fichierEncode != null) enregistrerFichier(arbre, fichierEncode);
-		
-	}
-	
-	public static void main (String args[]){
-		File in = new File("/home/quentin/Documents/workspace/Projet Huffman/src/algo1/test/fichierTest");
-		File out = new File("/home/quentin/Documents/workspace/Projet Huffman/src/algo1/test/fichierTestCom");
-		HuffmanEncode test = null;
-		try {
-			test = new HuffmanEncode(in, out);
-		} catch (FileNotFoundException e){
-			e.printStackTrace();
-		}
-		test.huffmaner();
-		
-	}
 
+		System.out.println(fichierEncode);
+
+		if (fichierEncode != null) enregistrerFichier(arbre, fichierEncode);
+
+	}
 }
