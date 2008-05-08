@@ -1,10 +1,5 @@
 package bitutils.test;
 
-/**
- * @author Franck Séhédic
- * 
- * TestUnit pour la classe BitArray
- */
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -25,7 +20,12 @@ import bitutils.BitArrayBooleanArray;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
-
+/**
+ * <code>TestBitArrayBooleanArray</code> defines
+ * a class test for the <code>BitArrayBooleanArray</code> class
+ * 
+ * @author Franck Séhédic <sehedic@ecole.ensicaen.fr>
+ */
 public class TestBitArrayBooleanArray {
 	
 	private byte[] testArray= { (byte)0xF0, 0x55 , (byte)0xF0, 0x55 };

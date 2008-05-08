@@ -7,11 +7,23 @@ package algo1;
  * @author Romain Macureau <macureau@ecole.ensicaen.fr>
  */
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
-import bitutils.*;
-import algo.*;
-import arbre1.*;
+import algo.Huffmaneur;
+import arbre1.Arbre;
+import arbre1.FreqNode;
+import arbre1.LeafNode;
+import arbre1.Node;
+import bitutils.BitArrayBooleanArray;
+import bitutils.BitInputStream;
+import bitutils.BitOutputStream;
 
 public class HuffmanDecodeBis extends Huffmaneur {
 

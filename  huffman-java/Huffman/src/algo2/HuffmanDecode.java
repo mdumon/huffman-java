@@ -22,18 +22,30 @@ import bitutils.BitOutputStream;
  * decoding algorithm.
  * 
  * @author Maxime Dumon <dumon@ecole.ensicaen.fr>
+ * @version 1.0, 18/04/08
+ * @see Huffmaneur
  */
-
 public class HuffmanDecode extends Huffmaneur {
 
 	public HuffmanDecode(){
 		super();
 	}
-
+	
+	/**
+	 * Creates a <code>HuffmanDecode</code>
+	 * from an inputFile and an outputFile
+	 * @param the <code>inputFile</code> to decode and the <code>outputFile</code>
+	 * which will be the decoded file
+	 */
 	public HuffmanDecode(File inputFile, File outputFile) throws FileNotFoundException {
 		super(inputFile,outputFile);
 	}
-
+	
+	/**
+	 * Decode the inputFile in the outputFile
+	 * @param void
+	 * @return void
+	 */
 	@Override
 	protected void huffmaner() {
 		BitInputStream bis;
@@ -104,7 +116,14 @@ public class HuffmanDecode extends Huffmaneur {
 			bos.close();
 		}catch(IOException eg){}
 	}
-
+	
+	/**
+	 * Find in an <code>HuffmanTree</code>
+	 * the decoded value of a bitArray from an inputStream
+	 * @param the <code>BitArrayBooleanArray</code> to decode
+	 * the <code>Node</code> of the tree, the <code>BitInputstream</code> and <code>BitOutputStream</code>
+	 * used to read and write the values.
+	 */
 	private int decArbre (BitArrayBooleanArray ba, Node<FreqCode> node, BitInputStream bis, BitOutputStream bos) {
 
 		byte bitlu = 0;

@@ -14,7 +14,12 @@ import bitutils.BitArray;
 import bitutils.BitArrayBooleanArray;
 import bitutils.BitInputStream;
 
-
+/**
+ * <code>TestBitInputStream</code> defines
+ * a class test for the <code>BitInputStream</code> class
+ * 
+ * @author Franck Séhédic <sehedic@ecole.ensicaen.fr>
+ */
 public class TestBitInputStream {
 	
 	static final boolean[] testBoolTab = new boolean[]{

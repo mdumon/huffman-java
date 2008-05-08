@@ -3,6 +3,11 @@ package ArrayUtils;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/**
+ * <code>DynamicArray<T></code>
+ * 
+ * @author Franck Séhédic <sehedic@ecole.ensicaen.fr>
+ */
 public class DynamicArray<T> implements Iterable<T> {
 	T[] t;
 
