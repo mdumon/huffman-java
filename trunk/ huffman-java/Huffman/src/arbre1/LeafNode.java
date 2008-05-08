@@ -2,7 +2,6 @@ package arbre1;
 
 import java.io.Serializable;
 
-import bitutils.BitArray;
 import bitutils.BitArrayBooleanArray;
 
 public class LeafNode implements Node, Serializable {

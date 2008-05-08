@@ -3,6 +3,12 @@ package bitutils;
 import java.io.Serializable;
 import java.util.Iterator;
 
+/**
+ * <code>BitArray</code> is an interface
+ * to work with bits arrays instead of byte arrays
+ * 
+ * @author Franck Séhédic <sehedic@ecole.ensicaen.fr>
+ */
 public interface BitArray extends Iterable<Boolean>, Serializable{
 	
  	public boolean[] toBooleanArray();
