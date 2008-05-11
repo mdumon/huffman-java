@@ -29,7 +29,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import algo1.HuffmanEncode;
+import algo2.HuffmanEncode;
 import algo2.HuffmanDecode;
 
 
