@@ -25,11 +25,9 @@ public class BitOutputStream extends FilterOutputStream{
 
 		for(int i = off; i < (off + len); i++)
 			buffer.add(b.get(i));
-		System.out.println("Le buffer vaut avant : " + buffer);
+
 		if(!buffer.isEmpty())
 			write(buffer.removeWritableByteArray());
-		
-		System.out.println("Le buffer vaut après : " + buffer);
 	}
 
 

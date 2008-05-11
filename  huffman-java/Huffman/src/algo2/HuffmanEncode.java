@@ -93,11 +93,13 @@ public class HuffmanEncode extends Huffmaneur {
 			return null;
 		}
 		
-		/**************************************************
-		 * On créer un tableau de fréquence basé sur l'inputFile
-		 */
-		fca = new DynamicArray<FreqCode>(new FreqCode[0],(int) (Math.pow(2.0, dicoSize)/4), (int) (Math.pow(2.0, dicoSize)/4));
-
+		tl.log("Création du tableau de fréquence, dico : " + getDicoSize());
+		
+		advTotal = getInputFile().length()* On créer un tableau de fréquence basé sur l'inputFile */
+		/* Complexitée => nbElements! */
+		list = new FreqCode[((int)Math.pow(2.0, dicoSize))/2];
+		nbFreqCode = 0;
+		nbElements = 0;
 		boolean found;
 		try {
 			while(!isCanceled()){
