@@ -93,13 +93,11 @@ public class HuffmanEncode extends Huffmaneur {
 			return null;
 		}
 		
-		tl.log("Création du tableau de fréquence, dico : " + getDicoSize());
-		
-		advTotal = getInputFile().length()* On créer un tableau de fréquence basé sur l'inputFile */
-		/* Complexitée => nbElements! */
-		list = new FreqCode[((int)Math.pow(2.0, dicoSize))/2];
-		nbFreqCode = 0;
-		nbElements = 0;
+		/**************************************************
+		 * On créer un tableau de fréquence basé sur l'inputFile
+		 */
+		fca = new DynamicArray<FreqCode>(new FreqCode[0],(int) (Math.pow(2.0, dicoSize)/4), (int) (Math.pow(2.0, dicoSize)/4));
+
 		boolean found;
 		try {
 			while(!isCanceled()){
@@ -173,7 +171,7 @@ public class HuffmanEncode extends Huffmaneur {
 		 */
 		getLogger().log("On sérialise le nombre d'éléments que l'on va encoder");
 		try {
-			new ObjectOutputStream(bos).writeObject(new Long(getInputFile().length()));
+			new ObjectOutputStream(bos).writeObject((Integer) new Integer((int) ( ((getInputFile().length()*8)-1)/getDicoSize()+1 ) ));
 		} catch (IOException ignore) { return; }
 		
 		/*************************************
@@ -192,7 +190,7 @@ public class HuffmanEncode extends Huffmaneur {
 			while(!isCanceled()){
 				ba = bis.readBits(dicoSize);
 				
-				if(ba.size() == 0) break;
+				if(ba.size() == 0)	break;
 				
 				for(FreqCode fc: fca){
 					if(ba.equals(fc.getKey())){
